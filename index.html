@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Through the Lens: Tokyo & Digital Camera Evolution</title>
+    <!-- Pure.css Framework -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- Vega & Vega-Lite Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Through the Lens: Tokyo & Digital Camera Evolution</h1>
+        <p>A visual exploration of tourist movement across Tokyo paired with the technological boom of digital cameras (1994–2007).</p>
+        <p class="metadata"><strong>Author:</strong> Rachel Chiew | <strong>Date:</strong> October 2026 | <strong>Data Sources:</strong> Flickr Tokyo Geotags & Camera Dataset</p>
+    </div>
+
+    <div class="content">
+        <!-- Section 1: Introduction & Maps -->
+        <section class="section">
+            <h2>Part 1: Mapping Tokyo's Sightseeing Hotspots</h2>
+            <p>Where do visitors take photos in Tokyo? Spatial distributions reveal heavy clustering around central transit hubs and historical landmarks.</p>
+            
+            <div class="pure-g">
+                <div class="pure-u-1 pure-u-md-1-2">
+                    <h3>Map 1: Geographic Density Heatmap</h3>
+                    <div id="map_heatmap" class="vis-container"></div>
+                </div>
+                <div class="pure-u-1 pure-u-md-1-2">
+                    <h3>Map 2: Proportional Bubble Map</h3>
+                    <div id="map_bubble" class="vis-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Camera Evolution -->
+        <section class="section">
+            <h2>Part 2: The Evolution of Digital Cameras (1994–2007)</h2>
+            <p>As tourism grew, the tools capturing these moments underwent massive technological shifts in price, weight, and resolution.</p>
+            
+            <div class="pure-g">
+                <div class="pure-u-1 pure-u-md-1-2">
+                    <h3>Chart 4: Resolution vs. Price Bubble Plot</h3>
+                    <div id="chart_scatter" class="vis-container"></div>
+                </div>
+                <div class="pure-u-1 pure-u-md-1-2">
+                    <h3>Chart 6: Brand Price Jitter Plot</h3>
+                    <div id="chart_jitter" class="vis-container"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="js/vis.js"></script>
+</body>
+</html>

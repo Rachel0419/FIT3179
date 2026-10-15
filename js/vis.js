@@ -1,7 +1,7 @@
-// Variable pointing to your modular Vega-Lite JSON file for Map 1
+// Variable pointing to Map 1 JSON
 var vg_1 = "json/map1.json";
+vegaEmbed("#map_heatmap", vg_1).catch(console.error);
 
-// Embed Map 1 into the HTML div container with id="map_heatmap"
-vegaEmbed("#map_heatmap", vg_1).then(function(result) {
-    // Access the Vega view instance if needed (https://vega.github.io/vega/docs/api/view/)
-}).catch(console.error);
+// Variable pointing to Map 2 JSON
+var vg_2 = "json/map2.json";
+vegaEmbed("#map_bubble", vg_2).catch(console.error);

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 500,
+  "height": 400,
+  "title": "Tokyo Proportional Bubble Map",
+  "data": {
+    "url": "data/tokyo_clean.csv"
+  },
+  "mark": {
+    "type": "point",
+    "filled": true,
+    "opacity": 0.6
+  },
+  "encoding": {
+    "longitude": {
+      "field": "longitude",
+      "type": "quantitative",
+      "title": "Longitude"
+    },
+    "latitude": {
+      "field": "latitude",
+      "type": "quantitative",
+      "title": "Latitude"
+    },
+    "size": {
+      "field": "x",
+      "type": "quantitative",
+      "title": "Spatial X Coord",
+      "legend": null
+    },
+    "color": {
+      "field": "y",
+      "type": "quantitative",
+      "title": "Spatial Y Coord",
+      "scale": {"scheme": "viridis"}
+    },
+    "tooltip": [
+      {"field": "user_id", "type": "nominal", "title": "User ID"},
+      {"field": "date_taken", "type": "nominal", "title": "Time Taken"}
+    ]
+  }
+}

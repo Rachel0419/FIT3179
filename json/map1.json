@@ -1,0 +1,33 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 500,
+  "height": 400,
+  "title": "Tokyo Photo Density Heatmap",
+  "data": {
+    "url": "data/tokyo_clean.csv"
+  },
+  "mark": {
+    "type": "circle",
+    "opacity": 0.4,
+    "size": 10
+  },
+  "encoding": {
+    "longitude": {
+      "field": "longitude",
+      "type": "quantitative",
+      "title": "Longitude"
+    },
+    "latitude": {
+      "field": "latitude",
+      "type": "quantitative",
+      "title": "Latitude"
+    },
+    "color": {
+      "value": "#d95f02"
+    },
+    "tooltip": [
+      {"field": "user_id", "type": "nominal", "title": "User ID"},
+      {"field": "date_taken", "type": "nominal", "title": "Time Taken"}
+    ]
+  }
+}

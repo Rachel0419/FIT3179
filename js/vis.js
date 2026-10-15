@@ -1,35 +1,7 @@
-// --- MAP 1: Geographic Density Heatmap (Advanced Map Idiom) ---
-const mapHeatmapSpec = {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 600,
-  "height": 400,
-  "data": {
-    "url": "data/tokyo_clean.csv"
-  },
-  "mark": {
-    "type": "circle",
-    "opacity": 0.4,
-    "size": 10
-  },
-  "encoding": {
-    "longitude": {
-      "field": "longitude",
-      "type": "quantitative",
-      "title": "Longitude"
-    },
-    "latitude": {
-      "field": "latitude",
-      "type": "quantitative",
-      "title": "Latitude"
-    },
-    "color": {
-      "value": "#d95f02"
-    },
-    "tooltip": [
-      {"field": "user_id", "type": "nominal", "title": "User ID"},
-      {"field": "date_taken", "type": "nominal", "title": "Time Taken"}
-    ]
-  }
-};
+// Variable pointing to your modular Vega-Lite JSON file for Map 1
+var vg_1 = "json/map1.json";
 
-vegaEmbed('#map_heatmap', mapHeatmapSpec);
+// Embed Map 1 into the HTML div container with id="map_heatmap"
+vegaEmbed("#map_heatmap", vg_1).then(function(result) {
+    // Access the Vega view instance if needed (https://vega.github.io/vega/docs/api/view/)
+}).catch(console.error);

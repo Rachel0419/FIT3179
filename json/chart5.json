@@ -39,14 +39,14 @@
     "color": "#4e79a7",
     "opacity": 0.65,
     "median": {
-      "color": "#1f1f1f",
+      "color": "#1b2430",
       "thickness": 2
     },
     "rule": {
-      "color": "#6b6558"
+      "color": "#5b6776"
     },
     "ticks": {
-      "color": "#6b6558"
+      "color": "#5b6776"
     },
     "outliers": {
       "size": 18,
@@ -104,9 +104,9 @@
       "labelFontSize": 11,
       "titleFontSize": 12,
       "titleFontWeight": 600,
-      "gridColor": "#ece6d6",
-      "domainColor": "#8B8178",
-      "tickColor": "#8B8178"
+      "gridColor": "#e4e9f0",
+      "domainColor": "#9aa5b1",
+      "tickColor": "#9aa5b1"
     },
     "legend": {
       "labelFontSize": 11,

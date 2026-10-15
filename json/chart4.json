@@ -112,9 +112,9 @@
       "labelFontSize": 11,
       "titleFontSize": 12,
       "titleFontWeight": 600,
-      "gridColor": "#ece6d6",
-      "domainColor": "#8B8178",
-      "tickColor": "#8B8178"
+      "gridColor": "#e4e9f0",
+      "domainColor": "#9aa5b1",
+      "tickColor": "#9aa5b1"
     },
     "legend": {
       "labelFontSize": 11,

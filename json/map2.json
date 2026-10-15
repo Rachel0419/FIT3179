@@ -21,8 +21,8 @@
       },
       "mark": {
         "type": "geoshape",
-        "fill": "#F2E8D5",
-        "stroke": "#BDB29E",
+        "fill": "#E8ECF1",
+        "stroke": "#C3CBD6",
         "strokeWidth": 0.5
       }
     },
@@ -268,7 +268,7 @@
         "type": "text",
         "fontSize": 11,
         "fontWeight": 600,
-        "color": "#1f1f1f"
+        "color": "#1b2430"
       },
       "encoding": {
         "longitude": {

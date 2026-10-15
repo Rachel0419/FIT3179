@@ -1,42 +1,72 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 500,
-  "height": 400,
-  "title": "Tokyo Proportional Bubble Map",
-  "data": {
-    "url": "data/tokyo_clean.csv"
+  "width": 380,
+  "height": 380,
+  "projection": {
+    "type": "mercator",
+    "center": [139.75, 35.68],
+    "scale": 55000
   },
-  "mark": {
-    "type": "point",
-    "filled": true,
-    "opacity": 0.6
-  },
-  "encoding": {
-    "longitude": {
-      "field": "longitude",
-      "type": "quantitative",
-      "title": "Longitude"
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/dataofjapan/land/master/japan.topojson", 
+        "format": {
+          "type": "topojson",
+          "feature": "japan"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#F2E8D5",
+        "stroke": "#8B8178",
+        "strokeWidth": 0.8
+      }
     },
-    "latitude": {
-      "field": "latitude",
-      "type": "quantitative",
-      "title": "Latitude"
-    },
-    "size": {
-      "field": "x",
-      "type": "quantitative",
-      "title": "Spatial X Coord",
-      "legend": null
-    },
-    "color": {
-      "field": "y",
-      "type": "quantitative",
-      "title": "Spatial Y Coord",
-      "scale": {"scheme": "viridis"}
-    },
-    "tooltip": [
-      {"field": "user_id", "type": "nominal", "title": "User ID"},
-      {"field": "date_taken", "type": "nominal", "title": "Time Taken"}
-    ]
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "mark": {
+        "type": "circle",
+        "filled": true,
+        "opacity": 0.7,
+        "stroke": "#FFFFFF",
+        "strokeWidth": 0.5
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "size": {
+          "field": "x",
+          "type": "quantitative",
+          "title": "Spatial X Coord",
+          "scale": {"range": [10, 300]}
+        },
+        "color": {
+          "field": "y",
+          "type": "quantitative",
+          "title": "Spatial Y Coord",
+          "scale": {"scheme": "viridis"}
+        },
+        "tooltip": [
+          {"field": "user_id", "type": "nominal", "title": "User ID"},
+          {"field": "date_taken", "type": "nominal", "title": "Time Taken"},
+          {"field": "longitude", "type": "quantitative", "format": ".4f", "title": "Lon"},
+          {"field": "latitude", "type": "quantitative", "format": ".4f", "title": "Lat"}
+        ]
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    }
   }
 }

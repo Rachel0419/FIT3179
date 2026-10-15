@@ -1,0 +1,31 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 380,
+  "height": 380,
+  "data": {
+    "url": "data/camera_dataset.csv"
+  },
+  "mark": {
+    "type": "line",
+    "point": true,
+    "strokeWidth": 3
+  },
+  "encoding": {
+    "x": {
+      "field": "Release date",
+      "type": "quantitative",
+      "title": "Release Year",
+      "scale": {"zero": false}
+    },
+    "y": {
+      "aggregate": "median",
+      "field": "Price",
+      "type": "quantitative",
+      "title": "Median Price ($ USD)"
+    },
+    "tooltip": [
+      {"field": "Release date", "type": "quantitative", "title": "Year"},
+      {"aggregate": "median", "field": "Price", "type": "quantitative", "title": "Median Price ($)", "format": ".2f"}
+    ]
+  }
+}

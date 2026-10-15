@@ -1,0 +1,41 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 380,
+  "height": 380,
+  "data": {
+    "url": "data/camera_dataset.csv"
+  },
+  "mark": {"type": "circle", "opacity": 0.7},
+  "encoding": {
+    "x": {
+      "field": "Release date",
+      "type": "quantitative",
+      "title": "Release Year",
+      "scale": {"zero": false}
+    },
+    "y": {
+      "field": "Price",
+      "type": "quantitative",
+      "title": "Price ($ USD, Log Scale)",
+      "scale": {"type": "log"}
+    },
+    "size": {
+      "field": "Effective pixels",
+      "type": "quantitative",
+      "title": "Effective Pixels (MP)"
+    },
+    "color": {
+      "field": "Zoom wide (W)",
+      "type": "quantitative",
+      "title": "Zoom Wide (mm)",
+      "scale": {"scheme": "blues"}
+    },
+    "tooltip": [
+      {"field": "Model", "type": "nominal", "title": "Camera Model"},
+      {"field": "Release date", "type": "quantitative", "title": "Release Year"},
+      {"field": "Price", "type": "quantitative", "title": "Price ($)"},
+      {"field": "Effective pixels", "type": "quantitative", "title": "Effective Pixels"},
+      {"field": "Zoom wide (W)", "type": "quantitative", "title": "Zoom Wide"}
+    ]
+  }
+}

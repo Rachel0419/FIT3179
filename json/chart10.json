@@ -1,0 +1,35 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 380,
+  "height": 380,
+  "data": {
+    "url": "data/camera_dataset.csv"
+  },
+  "transform": [
+    {"calculate": "split(datum.Model, ' ')[0]", "as": "Brand"}
+  ],
+  "mark": {
+    "type": "point",
+    "filled": true,
+    "size": 100,
+    "color": "#e377c2"
+  },
+  "encoding": {
+    "x": {
+      "aggregate": "mean",
+      "field": "Price",
+      "type": "quantitative",
+      "title": "Average Price ($ USD)"
+    },
+    "y": {
+      "field": "Brand",
+      "type": "nominal",
+      "sort": "-x",
+      "title": "Camera Brand"
+    },
+    "tooltip": [
+      {"field": "Brand", "type": "nominal", "title": "Brand"},
+      {"aggregate": "mean", "field": "Price", "type": "quantitative", "title": "Average Price ($)", "format": ".2f"}
+    ]
+  }
+}

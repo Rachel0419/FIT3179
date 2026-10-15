@@ -1,0 +1,87 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 380,
+  "height": 380,
+  "projection": {
+    "type": "mercator",
+    "center": [139.75, 35.68],
+    "scale": 55000
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/dataofjapan/land/master/japan.topojson",
+        "format": {
+          "type": "topojson",
+          "feature": "japan"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#F2E8D5",
+        "stroke": "#8B8178",
+        "strokeWidth": 0.8
+      }
+    },
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "transform": [
+        {
+          "bin": {"maxbins": 40},
+          "field": "longitude",
+          "as": "bin_lon"
+        },
+        {
+          "bin": {"maxbins": 40},
+          "field": "latitude",
+          "as": "bin_lat"
+        },
+        {
+          "aggregate": [{"op": "count", "as": "photo_count"}],
+          "groupby": ["bin_lon", "bin_lon_end", "bin_lat", "bin_lat_end"]
+        },
+        {
+          "calculate": "(datum.bin_lon + datum.bin_lon_end) / 2",
+          "as": "mid_lon"
+        },
+        {
+          "calculate": "(datum.bin_lat + datum.bin_lat_end) / 2",
+          "as": "mid_lat"
+        }
+      ],
+      "mark": {
+        "type": "square",
+        "size": 160,
+        "opacity": 0.85
+      },
+      "encoding": {
+        "longitude": {
+          "field": "mid_lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "mid_lat",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "photo_count",
+          "type": "quantitative",
+          "title": "Photo Count",
+          "scale": {"scheme": "viridis"}
+        },
+        "tooltip": [
+          {"field": "mid_lon", "type": "quantitative", "title": "Grid Lon Center", "format": ".3f"},
+          {"field": "mid_lat", "type": "quantitative", "title": "Grid Lat Center", "format": ".3f"},
+          {"field": "photo_count", "type": "quantitative", "title": "Photos in Cell"}
+        ]
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}

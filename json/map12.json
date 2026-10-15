@@ -1,0 +1,158 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 380,
+  "height": 380,
+  "projection": {
+    "type": "mercator",
+    "center": [139.75, 35.68],
+    "scale": 55000
+  },
+  "params": [
+    {
+      "name": "selected_user",
+      "value": "71453924@N00",
+      "bind": {
+        "input": "select",
+        "options": [
+          "71453924@N00",
+          "24256658@N06",
+          "27889738@N07",
+          "38121641@N03",
+          "8819274@N04",
+          "95795770@N00"
+        ],
+        "name": "Select Tourist ID: "
+      }
+    }
+  ],
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/dataofjapan/land/master/japan.topojson",
+        "format": {
+          "type": "topojson",
+          "feature": "japan"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#F2E8D5",
+        "stroke": "#8B8178",
+        "strokeWidth": 0.8
+      }
+    },
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "transform": [
+        {
+          "filter": "datum.user_id == selected_user"
+        }
+      ],
+      "mark": {
+        "type": "line",
+        "interpolate": "monotone",
+        "strokeWidth": 2.5,
+        "color": "#2563eb",
+        "opacity": 0.75
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "order": {
+          "field": "date_taken",
+          "type": "temporal"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "transform": [
+        {
+          "filter": "datum.user_id == selected_user"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "size": 45,
+        "color": "#1d4ed8",
+        "stroke": "#ffffff",
+        "strokeWidth": 1,
+        "opacity": 0.9
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {"field": "user_id", "type": "nominal", "title": "Tourist ID"},
+          {"field": "date_taken", "type": "temporal", "title": "Time Taken"},
+          {"field": "longitude", "type": "quantitative", "format": ".4f", "title": "Longitude"},
+          {"field": "latitude", "type": "quantitative", "format": ".4f", "title": "Latitude"}
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "transform": [
+        {
+          "filter": "datum.user_id == selected_user"
+        },
+        {
+          "window": [{"op": "row_number", "as": "dest_rank"}],
+          "sort": [{"field": "date_taken", "order": "descending"}]
+        },
+        {
+          "filter": "datum.dest_rank == 1"
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "shape": "diamond",
+        "size": 240,
+        "color": "#dc2626",
+        "filled": true,
+        "stroke": "#ffffff",
+        "strokeWidth": 2,
+        "opacity": 1
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {"field": "user_id", "type": "nominal", "title": "Tourist ID"},
+          {"field": "date_taken", "type": "temporal", "title": "Final Destination Time"},
+          {"field": "longitude", "type": "quantitative", "format": ".4f", "title": "Dest Lon"},
+          {"field": "latitude", "type": "quantitative", "format": ".4f", "title": "Dest Lat"}
+        ]
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}

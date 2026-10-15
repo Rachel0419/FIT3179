@@ -1,50 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Through the Lens: Tokyo & Digital Camera Evolution</title>
-    
-    <!-- Pure.css Framework for Layout -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css">
-    
-    <!-- Custom CSS File -->
-    <link rel="stylesheet" href="style.css">
-    
-    <!-- Vega & Vega-Lite Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Through the Lens: Tokyo Sightseeing & Digital Footprints</title>
+
+  <!-- Vega & Vega-Lite CDN Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+  <!-- Custom CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="header">
-        <h1>Through the Lens: Tokyo & Digital Camera Evolution</h1>
-        <p>A visual exploration of tourist movement across Tokyo paired with the technological boom of digital cameras (1994–2007).</p>
-        <p class="metadata"><strong>Author:</strong> Rachel Chiew | <strong>Date:</strong> October 2026</p>
-    </div>
+  <div class="dashboard-container">
+    
+    <!-- Dashboard Header & Metadata -->
+    <header class="dashboard-header">
+      <h1>Through the Lens: Tokyo Sightseeing & Digital Footprints</h1>
+      <p class="subtitle">
+        An interactive data story exploring tourist mobility across Tokyo and the photography equipment capturing digital memories.
+      </p>
 
-    <div class="content">
-        <!-- Section 1: Maps -->
-        <section class="section">
-            <h2>Part 1: Mapping Tokyo's Sightseeing Hotspots</h2>
-            <p>Geotagged photo density and proportional spatial mapping reveal where visitors concentrate across Tokyo.</p>
-            
-            <div class="pure-g">
-                <div class="pure-u-1 pure-u-md-1-2">
-                    <h3>Map 1: Geographic Density Heatmap</h3>
-                    <div id="map_heatmap" class="vis-container"></div>
-                </div>
-                <div class="pure-u-1 pure-u-md-1-2">
-                    <h3>Map 2: Proportional Bubble Map</h3>
-                    <div id="map_bubble" class="vis-container"></div>
-                </div>
-            </div>
-        </section>
-    </div>
+      <div class="metadata-banner">
+        <div><strong>Author:</strong> Rachel Chiew Dhian Lin</div>
+        <div><strong>Unit:</strong> FIT3179 Data Visualisation 2</div>
+        <div><strong>Date:</strong> October 2026</div>
+        <div><strong>Data Sources:</strong> <code>tokyo_clean.csv</code> (Flickr Metadata) &amp; <code>camera_dataset.csv</code></div>
+      </div>
+    </header>
 
-    <!-- External JavaScript file embedding the visualisations -->
-    <script src="js/vis.js"></script>
+    <!-- Project Context & Domain Summary -->
+    <section class="overview-box">
+      <h2>Project Overview &amp; Context</h2>
+      <div class="overview-grid">
+        <div>
+          <strong>Who:</strong> Designed for an audience interested in urban tourism analytics, travel mobility, and photography technology.
+        </div>
+        <div>
+          <strong>What:</strong> A single-page data visualization dashboard combining spatial geotagged photo footprints across Tokyo with technical camera specs.
+        </div>
+        <div>
+          <strong>Why:</strong> To uncover where visitors congregate in Tokyo, how individuals move between landmarks, and how camera hardware (ISO, weight, price, resolution) supports urban photography.
+        </div>
+        <div>
+          <strong>How:</strong> Built using Vega-Lite with 12 non-repeating advanced visualization idioms layered over custom geographic TopoJSON land boundaries.
+        </div>
+      </div>
+    </section>
+
+    <!-- ACT I: Spatial & Geographic Dynamics -->
+    <section class="dashboard-section">
+      <div class="act-header">
+        <h2>Act I: Spatial &amp; Geographic Dynamics</h2>
+        <p>Every day, thousands of visitors explore Tokyo, leaving behind digital footprints via geotagged photographs. Act I maps these footprints across four distinct spatial perspectives.</p>
+      </div>
+      
+      <!-- Row 1: Region Categorization & Individual Flow Trajectory -->
+      <div class="grid-2-col">
+        <div class="card">
+          <h3>Map 1: Sightseeing Distribution by Region</h3>
+          <p class="description">
+            Tokyo operates as a distinct collection of wards. By classifying photo longitudes into municipal zones, over 65% of all geotagged photos concentrate within the Central Core Wards (Shinjuku, Shibuya, Minato), while Waterfront and Western zones serve secondary excursion routes.
+          </p>
+          <div id="map_region" class="vis-container"></div>
+          <blockquote class="annotation-callout">
+            <strong>Key Insight:</strong> The Central Core Wards host peak photo density, driven by iconic landmarks like Shibuya Crossing, Tokyo Tower, and Shinjuku.
+          </blockquote>
+        </div>
+
+        <div class="card">
+          <h3>Map 12: Individual Tourist Trajectory &amp; Destination</h3>
+          <p class="description">
+            Filtering by tourist ID reveals individual daily routes. Some visitors stay within tight localized hubs, while others execute cross-city journeys. The red diamond highlights each tourist's final recorded photo destination.
+          </p>
+          <div id="map_flow" class="vis-container"></div>
+          <blockquote class="annotation-callout">
+            <strong>Key Insight:</strong> Use the interactive dropdown menu to trace individual travel routes and locate their final destination diamond.
+          </blockquote>
+        </div>
+      </div>
+
+      <!-- Row 2: Proportional Bubble & Density Grid -->
+      <div class="grid-2-col">
+        <div class="card">
+          <h3>Map 2: Proportional Spatial Symbol Map</h3>
+          <p class="description">
+            Scaling photo markers by spatial coordinate magnitude illustrates structural spatial weight. Rather than spreading evenly, tourist activities cling tightly to major transport arteries framing central Tokyo.
+          </p>
+          <div id="map_bubble" class="vis-container"></div>
+          <blockquote class="annotation-callout">
+            <strong>Key Insight:</strong> Bubble sizes visually emphasize how tourist activity concentrates along the circular Yamanote train line.
+          </blockquote>
+        </div>
+
+        <div class="card">
+          <h3>Map 3: Spatial Density Grid Map</h3>
+          <p class="description">
+            Aggregating photos into 2D geographic grid cells eliminates point overlap. Continuous Viridis coloring reveals two primary super-clusters: Shinjuku-Shibuya in the west and Ginza-Asakusa in the east.
+          </p>
+          <div id="map_grid" class="vis-container"></div>
+          <blockquote class="annotation-callout">
+            <strong>Key Insight:</strong> Shinjuku and Shibuya grid cells record peak densities exceeding 400 photos per cell.
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACT II: Equipment Performance & Technology -->
+    <section class="dashboard-section">
+      <div class="act-header">
+        <h2>Act II: Equipment Performance &amp; Technology</h2>
+        <p>Behind every photograph captured on Tokyo's streets is an optical instrument. Act II evaluates how price, weight, sensor resolution, and exposure specs shape consumer gear choices.</p>
+      </div>
+
+      <!-- Row 3: Chart 4 (Jitter Plot) & Chart 5 (Scatter Plot) -->
+      <div class="grid-2-col">
+        <div class="card">
+          <h3>Chart 4: Price vs ISO Sensitivity (Jitter Plot)</h3>
+          <p class="description">Dispersing raw camera bodies across ISO sensitivity bins reveals that entry-level gear ($300–$700) tops out at ISO 6,400, whereas professional bodies ($2,000+) push beyond ISO 25,600 for nighttime street shooting.</p>
+          <div id="chart4" class="vis-container"></div>
+          <blockquote class="annotation-callout">
+            <strong>Key Insight:</strong> Cameras with ISO limits above 25,600 command a price premium, averaging over $2,200 per body.
+          </blockquote>
+        </div>
+
+        <div class="card">
+          <h3>Chart 5: Price Distribution Across Brands (Scatter Plot)</h3>
+          <p class="description">Plots individual camera body prices across major manufacturers on a logarithmic scale, highlighting the spread from budget point-and-shoot models to high-end flagship systems.</p>
+          <div id="chart5" class="vis-container"></div>
+          <blockquote class="annotation-callout">
+            <strong>Key Insight:</strong> Premium brands maintain tight pricing clusters in the $1,500–$3,500 bracket, while mainstream brands cover the full $100–$2,000 range.
+          </blockquote>
+        </div>
+      </div>
+
+      <!-- Row 6: Chart 6 (Slope Graph) & Chart 7 (Heatmap) -->
+      <div class="grid-2-col">
+        <div class="card">
+          <h3>Chart 6: Median Price Evolution (Slope Graph)</h3>
+          <p class="description">Connects historical median camera price points across consecutive release years, illustrating market valuation shifts and technology adoption phases.</p>
+          <div id="chart6" class="vis-container"></div>
+          <blockquote class="annotation-callout">
+            <strong>Key Insight:</strong> Average camera prices spiked alongside digital sensor adoption before stabilizing as manufacturing matured.
+          </blockquote>
+        </div>
+
+        <div class="card">
+          <h3>Chart 7: Lens Zoom vs Price Density (Heatmap)</h3>
+          <p class="description">Aggregates camera models into 2D binned cells comparing wide focal lengths against price brackets to expose structural manufacturing concentrations.</p>
+          <div id="chart7" class="vis-container"></div>
+          <blockquote class="annotation-callout">
+            <strong>Key Insight:</strong> The vast majority of consumer camera models concentrate in the standard 35–38mm wide-angle range under $1,000.
+          </blockquote>
+        </div>
+      </div>
+
+      <!-- Row 5: Chart 8 (Lollipop Chart) & Chart 9 (Bar Chart) -->
+      <div class="grid-2-col">
+        <div class="card">
+          <h3>Chart 8: Model Releases per Year (Lollipop Chart)</h3>
+          <p class="description">Ranks annual camera model release totals using high-contrast stem-and-dot lines to depict historical product launch momentum across the digital camera boom.</p>
+          <div id="chart8" class="vis-container"></div>
+          <blockquote class="annotation-callout">
+            <strong>Key Insight:</strong> Annual product releases grew steeply between 1998 and 2006, peaking as digital cameras replaced film.
+          </blockquote>
+        </div>
+
+        <div class="card">
+          <h3>Chart 9: Top Storage Formats (Bar Chart)</h3>
+          <p class="description">Compares memory card format support counts across camera models, illustrating the industry-wide transition toward standardized SD and CompactFlash media.</p>
+          <div id="chart9" class="vis-container"></div>
+          <blockquote class="annotation-callout">
+            <strong>Key Insight:</strong> Standard SD and CompactFlash formats account for over 75% of total card slot adoption across cataloged models.
+          </blockquote>
+        </div>
+      </div>
+
+      <!-- Row 6: Chart 10 (Dot Plot) & Chart 11 (Connected Dot Plot) -->
+      <div class="grid-2-col">
+        <div class="card">
+          <h3>Chart 10: Average Price by Brand (Dot Plot)</h3>
+          <p class="description">Ranks camera manufacturers along a clean horizontal axis based on mean body retail price to highlight market positioning strategies.</p>
+          <div id="chart10" class="vis-container"></div>
+          <blockquote class="annotation-callout">
+            <strong>Key Insight:</strong> Specialized manufacturers command average price points above $800, whereas mass-market brands average $150–$400.
+          </blockquote>
+        </div>
+
+        <div class="card">
+          <h3>Chart 11: Resolution Evolution Trend (Connected Dot Plot)</h3>
+          <p class="description">Connects historical maximum resolution milestones chronologically, demonstrating steady optical sensor advancements across consecutive release years.</p>
+          <div id="chart11" class="vis-container"></div>
+          <blockquote class="annotation-callout">
+            <strong>Key Insight:</strong> Maximum effective resolution grew exponentially from under 1,000 pixels in 1994 to over 3,000 pixels by 2006.
+          </blockquote>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Dashboard Footer -->
+    <footer class="dashboard-footer">
+      <p>FIT3179 Data Visualisation 2 | Monash University | Data Sources: <code>tokyo_clean.csv</code> &amp; <code>camera_dataset.csv</code></p>
+    </footer>
+
+  </div>
+
+  <!-- JavaScript Embed Loader -->
+  <script src="js/vis.js"></script>
 </body>
 </html>

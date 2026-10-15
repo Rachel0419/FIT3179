@@ -1,33 +1,75 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 500,
-  "height": 400,
-  "title": "Tokyo Photo Density Heatmap",
-  "data": {
-    "url": "data/tokyo_clean.csv"
+  "width": 380,
+  "height": 380,
+  "projection": {
+    "type": "mercator",
+    "center": [139.75, 35.68],
+    "scale": 55000
   },
-  "mark": {
-    "type": "circle",
-    "opacity": 0.4,
-    "size": 10
-  },
-  "encoding": {
-    "longitude": {
-      "field": "longitude",
-      "type": "quantitative",
-      "title": "Longitude"
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/dataofjapan/land/master/japan.topojson",
+        "format": {
+          "type": "topojson",
+          "feature": "japan"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#F2E8D5",
+        "stroke": "#8B8178",
+        "strokeWidth": 0.8
+      }
     },
-    "latitude": {
-      "field": "latitude",
-      "type": "quantitative",
-      "title": "Latitude"
-    },
-    "color": {
-      "value": "#d95f02"
-    },
-    "tooltip": [
-      {"field": "user_id", "type": "nominal", "title": "User ID"},
-      {"field": "date_taken", "type": "nominal", "title": "Time Taken"}
-    ]
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "transform": [
+        {
+          "calculate": "datum.longitude > 139.77 ? 'Eastern & Waterfront Wards' : (datum.longitude > 139.68 ? 'Central Core Wards' : 'Western Suburbs & Tama')",
+          "as": "tokyo_region"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "size": 35,
+        "opacity": 0.8,
+        "stroke": "#FFFFFF",
+        "strokeWidth": 0.4
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "tokyo_region",
+          "type": "nominal",
+          "title": "Tokyo Region",
+          "scale": {
+            "scheme": "set1"
+          }
+        },
+        "tooltip": [
+          {"field": "tokyo_region", "type": "nominal", "title": "Region Zone"},
+          {"field": "user_id", "type": "nominal", "title": "Tourist ID"},
+          {"field": "date_taken", "type": "nominal", "title": "Time Taken"},
+          {"field": "longitude", "type": "quantitative", "format": ".4f", "title": "Lon"},
+          {"field": "latitude", "type": "quantitative", "format": ".4f", "title": "Lat"}
+        ]
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    }
   }
 }

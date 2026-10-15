@@ -1,0 +1,41 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 380,
+  "height": 380,
+  "data": {
+    "url": "data/camera_dataset.csv"
+  },
+  "transform": [
+    {"calculate": "split(datum.Model, ' ')[0]", "as": "Brand"}
+  ],
+  "mark": {
+    "type": "point",
+    "filled": true,
+    "opacity": 0.6,
+    "size": 50
+  },
+  "encoding": {
+    "x": {
+      "field": "Brand",
+      "type": "nominal",
+      "title": "Camera Brand",
+      "axis": {"labelAngle": -45}
+    },
+    "y": {
+      "field": "Price",
+      "type": "quantitative",
+      "title": "Price ($ USD, Log Scale)",
+      "scale": {"type": "log"}
+    },
+    "color": {
+      "field": "Brand",
+      "type": "nominal",
+      "legend": null
+    },
+    "tooltip": [
+      {"field": "Model", "type": "nominal", "title": "Model"},
+      {"field": "Release date", "type": "quantitative", "title": "Release Year"},
+      {"field": "Price", "type": "quantitative", "title": "Price ($)"}
+    ]
+  }
+}

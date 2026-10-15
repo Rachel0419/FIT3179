@@ -1,0 +1,37 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 380,
+  "height": 380,
+  "data": {
+    "url": "data/camera_dataset.csv"
+  },
+  "transform": [
+    {
+      "aggregate": [
+        {"op": "mean", "field": "Max resolution", "as": "AvgMaxRes"},
+        {"op": "mean", "field": "Effective pixels", "as": "AvgEffPix"}
+      ],
+      "groupby": ["Release date"]
+    }
+  ],
+  "layer": [
+    {
+      "mark": {"type": "line", "color": "#b0bec5", "strokeWidth": 2},
+      "encoding": {
+        "x": {"field": "Release date", "type": "quantitative", "scale": {"zero": false}, "title": "Release Year"},
+        "y": {"field": "AvgMaxRes", "type": "quantitative", "title": "Resolution (Pixels)"}
+      }
+    },
+    {
+      "mark": {"type": "point", "filled": true, "size": 80, "color": "#ff7f0e"},
+      "encoding": {
+        "x": {"field": "Release date", "type": "quantitative"},
+        "y": {"field": "AvgMaxRes", "type": "quantitative"},
+        "tooltip": [
+          {"field": "Release date", "type": "quantitative", "title": "Year"},
+          {"field": "AvgMaxRes", "type": "quantitative", "title": "Avg Max Resolution", "format": ".1f"}
+        ]
+      }
+    }
+  ]
+}

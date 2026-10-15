@@ -1,0 +1,32 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 380,
+  "height": 380,
+  "data": {
+    "url": "data/camera_dataset.csv"
+  },
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "aggregate": "count",
+      "type": "quantitative",
+      "title": "Number of Camera Models"
+    },
+    "y": {
+      "field": "Storage included",
+      "type": "nominal",
+      "sort": "-x",
+      "title": "Storage / Memory Type"
+    },
+    "color": {
+      "field": "Storage included",
+      "type": "nominal",
+      "legend": null,
+      "scale": {"scheme": "tableau10"}
+    },
+    "tooltip": [
+      {"field": "Storage included", "type": "nominal", "title": "Storage Type"},
+      {"aggregate": "count", "type": "quantitative", "title": "Model Count"}
+    ]
+  }
+}

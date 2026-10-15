@@ -1,0 +1,29 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 380,
+  "height": 380,
+  "data": {
+    "url": "data/camera_dataset.csv"
+  },
+  "layer": [
+    {
+      "mark": {"type": "rule", "strokeWidth": 2, "color": "#757575"},
+      "encoding": {
+        "x": {"field": "Release date", "type": "quantitative", "scale": {"zero": false}},
+        "y": {"aggregate": "count", "type": "quantitative", "title": "Models Released"},
+        "y2": {"ymin": 0}
+      }
+    },
+    {
+      "mark": {"type": "circle", "size": 100, "filled": true, "color": "#1f77b4"},
+      "encoding": {
+        "x": {"field": "Release date", "type": "quantitative"},
+        "y": {"aggregate": "count", "type": "quantitative"},
+        "tooltip": [
+          {"field": "Release date", "type": "quantitative", "title": "Year"},
+          {"aggregate": "count", "type": "quantitative", "title": "Models Released"}
+        ]
+      }
+    }
+  ]
+}

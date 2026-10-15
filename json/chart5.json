@@ -1,41 +1,120 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 380,
-  "height": 380,
+  "width": 480,
+  "height": {
+    "step": 22
+  },
   "data": {
     "url": "data/camera_dataset.csv"
   },
   "transform": [
-    {"calculate": "split(datum.Model, ' ')[0]", "as": "Brand"}
+    {
+      "calculate": "split(datum.Model, ' ')[0]",
+      "as": "Brand"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "count",
+          "as": "models"
+        },
+        {
+          "op": "distinct",
+          "field": "Price",
+          "as": "price_levels"
+        }
+      ],
+      "groupby": [
+        "Brand"
+      ]
+    },
+    {
+      "filter": "datum.models >= 15 && datum.price_levels >= 5"
+    }
   ],
   "mark": {
-    "type": "point",
-    "filled": true,
-    "opacity": 0.6,
-    "size": 50
+    "type": "boxplot",
+    "extent": 1.5,
+    "size": 14,
+    "color": "#4e79a7",
+    "opacity": 0.65,
+    "median": {
+      "color": "#1f1f1f",
+      "thickness": 2
+    },
+    "rule": {
+      "color": "#6b6558"
+    },
+    "ticks": {
+      "color": "#6b6558"
+    },
+    "outliers": {
+      "size": 18,
+      "color": "#4e79a7",
+      "opacity": 0.5
+    }
   },
   "encoding": {
-    "x": {
+    "y": {
       "field": "Brand",
       "type": "nominal",
-      "title": "Camera Brand",
-      "axis": {"labelAngle": -45}
+      "title": null,
+      "sort": {
+        "field": "Price",
+        "op": "median",
+        "order": "descending"
+      },
+      "axis": {
+        "labelFontSize": 12,
+        "grid": false
+      }
     },
-    "y": {
+    "x": {
       "field": "Price",
       "type": "quantitative",
-      "title": "Price ($ USD, Log Scale)",
-      "scale": {"type": "log"}
+      "title": "Price (US$, log scale)",
+      "scale": {
+        "type": "log",
+        "domain": [
+          10,
+          10000
+        ]
+      },
+      "axis": {
+        "values": [
+          10,
+          30,
+          100,
+          300,
+          1000,
+          3000,
+          10000
+        ],
+        "format": "$,.0f",
+        "grid": true
+      }
+    }
+  },
+  "config": {
+    "view": {
+      "stroke": null
     },
-    "color": {
-      "field": "Brand",
-      "type": "nominal",
-      "legend": null
+    "font": "Open Sans",
+    "axis": {
+      "labelFontSize": 11,
+      "titleFontSize": 12,
+      "titleFontWeight": 600,
+      "gridColor": "#ece6d6",
+      "domainColor": "#8B8178",
+      "tickColor": "#8B8178"
     },
-    "tooltip": [
-      {"field": "Model", "type": "nominal", "title": "Model"},
-      {"field": "Release date", "type": "quantitative", "title": "Release Year"},
-      {"field": "Price", "type": "quantitative", "title": "Price ($)"}
-    ]
+    "legend": {
+      "labelFontSize": 11,
+      "titleFontSize": 11,
+      "titleFontWeight": 600,
+      "fillColor": "rgba(255,255,255,0.88)",
+      "padding": 6,
+      "cornerRadius": 3
+    }
   }
 }

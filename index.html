@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Through the Lens: Tokyo Sightseeing</title>
+  <title>Through the Lens: Tokyo</title>
 
   <!-- Vega Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
@@ -14,128 +14,176 @@
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
   <div class="dashboard-container">
-    
-    <!-- DV1 Style Header -->
+
+    <!-- Boxed title (DV1 style) -->
     <header class="dashboard-header">
       <h1>Through the Lens: Tokyo</h1>
-      <p class="subtitle">An interactive data story exploring tourist mobility across Tokyo and photography equipment trends.</p>
+      <p class="subtitle">Where do visitors point their cameras in Tokyo, and what kind of camera is in their hands? Follow the photos first, then the gear behind them.</p>
     </header>
 
-    <!-- Narrative Intro -->
-    <p class="narrative">
-      <strong>Overview:</strong> Designed for urban tourism analysts and photography enthusiasts, this dashboard combines spatial geotagged photo footprints across Tokyo with technical camera specifications. The goal is to uncover where visitors congregate, how they navigate between landmarks, and how camera hardware supports urban photography.
-    </p>
+    <!-- Intro: why, who, and plain-language terms -->
+    <div class="intro-grid">
+      <p class="narrative">
+        Planning a trip to Tokyo? Millions of visitors share geotagged photos online, and each photo quietly records where its owner stood. Put together, those photos show which parts of the city draw the crowds and how people move between them. This page then turns to the cameras themselves: what they cost, how they have changed, and which brands sit where on the market. It is written for curious travellers and photography fans, so no statistics background is needed.
+      </p>
+      <aside class="glossary">
+        <h4>Quick terms</h4>
+        <dl>
+          <dt>Geotag</dt>
+          <dd>A photo's saved location, so it can be placed on a map.</dd>
+          <dt>Megapixels</dt>
+          <dd>How many million dots make up a photo. More megapixels means finer detail.</dd>
+          <dt>Zoom (focal length)</dt>
+          <dd>How far a lens can bring a faraway scene closer.</dd>
+          <dt>Log scale</dt>
+          <dd>An axis where each step multiplies the value, so cheap and expensive items fit on one chart.</dd>
+        </dl>
+      </aside>
+    </div>
 
-    <!-- Section 1 -->
-    <h2 class="section-title">Act I: Spatial & Geographic Dynamics</h2>
+    <!-- ============ ACT I ============ -->
+    <p class="act-label">Act I &middot; The city</p>
+    <h2 class="section-title">Where Tokyo Gets Photographed</h2>
     <p class="narrative">
-      Every day, thousands of visitors explore Tokyo, leaving behind digital footprints via geotagged photographs. By classifying photo longitudes into municipal zones, we observe that over 65% of all geotagged photos concentrate within the Central Core Wards (Shinjuku, Shibuya, Minato), while Waterfront and Western zones serve as secondary excursion routes. Filtering by tourist ID reveals individual daily routes—some visitors stay within tight localized hubs, while others execute cross-city journeys.
+      Start with the big picture. Tokyo is made up of very different areas, from the busy central wards to the waterfront and the quieter west. The first map groups every geotagged photo by region, so you can see which areas attract the most attention. The second map zooms in on a single visitor: choose someone from the dropdown to see every place they took a photo, from their first photo to their last.
     </p>
 
     <div class="chart-row">
       <div class="chart-half">
-        <h4 class="chart-title">Map 1: Sightseeing Distribution by Region</h4>
+        <h4 class="chart-title">Sightseeing distribution by region</h4>
         <div id="map_region" class="vis-container"></div>
-        <p class="insight">Insight: The Central Core Wards host peak photo density, driven by iconic landmarks like Shibuya Crossing.</p>
+        <p class="insight">Photos are split into three parts of Tokyo by longitude. The central part holds the most (about 58%), then the east (about 30%) and the west (about 13%).</p>
       </div>
       <div class="chart-half">
-        <h4 class="chart-title">Map 12: Individual Tourist Trajectory</h4>
+        <h4 class="chart-title">Follow one visitor: individual photo trail</h4>
         <div id="map_flow" class="vis-container"></div>
-        <p class="insight">Insight: Use the interactive dropdown to trace travel routes and locate the final destination diamond.</p>
+        <p class="insight">Use the dropdown to switch visitors. The green dot is their first photo and the red diamond their last, in photo-ID order.</p>
       </div>
     </div>
 
-    <!-- Section 2 -->
-    <h2 class="section-title">Spatial Magnitude and Density</h2>
+    <p class="takeaway">Some visitors stay in one neighbourhood, while others cover the whole city. The region map shows the crowd, and the photo trail shows the individual.</p>
+
+    <h2 class="section-title">Finding the Hotspots</h2>
     <p class="narrative">
-      Scaling photo markers by spatial coordinate magnitude illustrates structural spatial weight. Rather than spreading evenly, tourist activities cling tightly to major transport arteries framing central Tokyo. Aggregating these into a 2D geographic grid eliminates point overlap, revealing two primary super-clusters: Shinjuku-Shibuya in the west and Ginza-Asakusa in the east.
+      Individual trails add up. Plotting every photo as a dot just creates a blur, so the next two maps simplify in different ways. The first shows only the ten busiest areas, each named and sized by its photo count. The second divides all of Tokyo into small squares and shades each one by its photo count. Look for the places where both maps agree, because those are the true hotspots.
     </p>
 
     <div class="chart-row">
       <div class="chart-half">
-        <h4 class="chart-title">Map 2: Proportional Spatial Symbol Map</h4>
+        <h4 class="chart-title">The ten busiest photo areas</h4>
         <div id="map_bubble" class="vis-container"></div>
-        <p class="insight">Insight: Activity concentrates heavily along the circular Yamanote train line.</p>
+        <p class="insight">Each circle is a patch of the city about 2 km across. A bigger circle means more photos. Area names are approximate.</p>
       </div>
       <div class="chart-half">
-        <h4 class="chart-title">Map 3: Spatial Density Grid Map</h4>
+        <h4 class="chart-title">Photo density across the city</h4>
         <div id="map_grid" class="vis-container"></div>
-        <p class="insight">Insight: Shinjuku and Shibuya grids record peak densities exceeding 400 photos per cell.</p>
+        <p class="insight">Each square is about 1 km across; darker means more photos. Squares with fewer than 3 photos are hidden.</p>
       </div>
     </div>
 
-    <!-- Section 3 -->
-    <h2 class="section-title">Act II: Equipment Performance & Technology</h2>
+    <!-- ============ ACT II ============ -->
+    <p class="act-label">Act II &middot; The camera</p>
+    <h2 class="section-title">What Does a Camera Cost?</h2>
     <p class="narrative">
-      Behind every photograph is an optical instrument. Dispersing raw camera bodies across ISO sensitivity bins reveals that entry-level gear tops out at ISO 6,400, whereas professional bodies push beyond ISO 25,600. Furthermore, plotting individual camera body prices on a logarithmic scale highlights the spread from budget point-and-shoots to high-end flagship systems.
+      Behind every photo is a camera, and cameras vary enormously. Some are simple, budget-friendly models. Others are professional bodies built for demanding conditions. The first chart plots every camera by release year and price, with bigger circles for more megapixels. The second compares how prices are spread within each brand. Both use a log scale, so one step up means many times the price.
     </p>
 
     <div class="chart-row">
       <div class="chart-half">
-        <h4 class="chart-title">Chart 4: Price vs ISO Sensitivity</h4>
+        <h4 class="chart-title">Camera price by release year</h4>
         <div id="chart4" class="vis-container"></div>
+        <p class="insight">Each circle is one camera, and bigger circles have more megapixels. Darker spots are where several cameras share the same price.</p>
       </div>
       <div class="chart-half">
-        <h4 class="chart-title">Chart 5: Price Distribution Across Brands</h4>
+        <h4 class="chart-title">Price range within each brand</h4>
         <div id="chart5" class="vis-container"></div>
+        <p class="insight">Each box covers the middle half of a brand's prices, and the dark line is its typical (median) price. Dots are unusually high or low prices. Only brands with at least 15 models and five or more different prices are shown, because the others have too little price variety to compare.</p>
       </div>
     </div>
 
-    <!-- Section 4 -->
-    <h2 class="section-title">Market Shifts and Capabilities</h2>
+    <h2 class="section-title">How Cameras Changed Over Time</h2>
     <p class="narrative">
-      Historical median camera price points shifted as digital sensor adoption matured. Concurrently, an evaluation of focal lengths against price brackets exposes structural manufacturing concentrations, showing the vast majority of consumer models concentrate in the standard wide-angle ranges. 
+      Cameras have not stood still. Across the years covered by the dataset, manufacturers released new models, sharper sensors arrived, and prices moved. These three charts follow that story: what the typical camera cost each year, how many new models appeared, and how image resolution grew.
     </p>
 
     <div class="chart-row">
       <div class="chart-half">
-        <h4 class="chart-title">Chart 6: Median Price Evolution</h4>
+        <h4 class="chart-title">Median price evolution</h4>
         <div id="chart6" class="vis-container"></div>
+        <p class="insight">The median is the middle price, so a few extreme models do not distort it.</p>
       </div>
       <div class="chart-half">
-        <h4 class="chart-title">Chart 7: Lens Zoom vs Price Density</h4>
-        <div id="chart7" class="vis-container"></div>
-      </div>
-    </div>
-
-    <div class="chart-row">
-      <div class="chart-half">
-        <h4 class="chart-title">Chart 8: Model Releases per Year</h4>
+        <h4 class="chart-title">Model releases per year</h4>
         <div id="chart8" class="vis-container"></div>
-      </div>
-      <div class="chart-half">
-        <h4 class="chart-title">Chart 9: Top Storage Formats</h4>
-        <div id="chart9" class="vis-container"></div>
+        <p class="insight">Tall bars show years when manufacturers released many new models.</p>
       </div>
     </div>
 
-    <!-- Section 5 -->
-    <h2 class="section-title">Brand Positioning & Resolution Trends</h2>
-    <p class="narrative">
-      Ranking camera manufacturers by mean body retail price highlights market positioning strategies, distinguishing specialized manufacturers from mass-market brands. Finally, connecting maximum resolution milestones chronologically demonstrates the exponential growth of optical sensors from under 1,000 pixels in 1994 to over 3,000 pixels by 2006.
-    </p>
-
-    <div class="chart-row">
-      <div class="chart-half">
-        <h4 class="chart-title">Chart 10: Average Price by Brand</h4>
-        <div id="chart10" class="vis-container"></div>
-      </div>
-      <div class="chart-half">
-        <h4 class="chart-title">Chart 11: Resolution Evolution Trend</h4>
+    <div class="chart-with-text">
+      <div class="chart-main">
+        <h4 class="chart-title">Resolution evolution trend</h4>
         <div id="chart11" class="vis-container"></div>
       </div>
+      <p class="narrative">
+        Resolution is the number of pixels in a photo. Following the maximum resolution year by year shows how quickly sensors improved. A sharper sensor lets a traveller crop into a skyline shot or print a large photo of Shibuya at night without it turning blurry.
+      </p>
     </div>
 
-    <!-- DV1 Style Footer (Metadata moved to bottom) -->
+    <h2 class="section-title">What Is in the Camera Bag?</h2>
+    <p class="narrative">
+      Finally, the details that shape how a camera feels to use: how far the lens zooms, which memory cards it takes, and how each brand positions itself on price. For a traveller, zoom decides whether you can capture Tokyo Tower from across the park, and storage decides which cards you need to pack.
+    </p>
+
+    <div class="chart-row">
+      <div class="chart-half">
+        <h4 class="chart-title">Lens zoom vs price density</h4>
+        <div id="chart7" class="vis-container"></div>
+        <p class="insight">Darker areas show where many cameras share a similar zoom and price.</p>
+      </div>
+      <div class="chart-half">
+        <h4 class="chart-title">Top storage formats</h4>
+        <div id="chart9" class="vis-container"></div>
+        <p class="insight">The longest bars are the memory card types that most cameras accept.</p>
+      </div>
+    </div>
+
+    <div class="chart-with-text">
+      <div class="chart-main">
+        <h4 class="chart-title">Average price by brand</h4>
+        <div id="chart10" class="vis-container"></div>
+      </div>
+      <p class="narrative">
+        Ranking brands by average price shows how each one positions itself. Brands at the top lean towards premium equipment, while brands at the bottom target everyday, budget-minded buyers.
+      </p>
+    </div>
+
+    <!-- ============ CONCLUSION ============ -->
+    <section class="conclusion">
+      <h2>Putting It Together</h2>
+      <p>
+        The photos show that Tokyo is not photographed evenly: visitors gather in a few hotspots and spread out along routes between them. The camera data shows that the tools used to capture those moments range from simple to professional, and have improved in resolution and variety over time.
+      </p>
+      <p>
+        Whether you are choosing where to point your lens or which lens to buy, these charts give you a starting point for planning your own trip through Tokyo.
+      </p>
+    </section>
+
+    <!-- Footer: sources, author, date, AI acknowledgement -->
     <footer class="dashboard-footer">
-      <p><strong>Note:</strong> Data sourced from <code>tokyo_clean.csv</code> (Flickr Metadata) & <code>camera_dataset.csv</code>.</p>
-      <p><strong>Author:</strong> Rachel Chiew Dhian Lin | <strong>Unit:</strong> FIT3179 Data Visualisation 2</p>
-      <p><strong>Date:</strong> October 2026 | Monash University</p>
+      <p><strong>Sources:</strong></p>
+      <ol>
+        <!-- TODO: add the full source name and URL for each dataset below (required by the DV2 brief). -->
+        <li>Tokyo geotagged photo metadata from Flickr (<code>tokyo_clean.csv</code>).</li>
+        <li>Camera specifications dataset (<code>camera_dataset.csv</code>).</li>
+      </ol>
+      <p><strong>Author:</strong> Rachel Chiew Dhian Lin | <strong>Unit:</strong> FIT3179 Data Visualisation 2 | Monash University</p>
+      <p><strong>Date:</strong> October 2026</p>
+      <p><strong>AI acknowledgement:</strong> Generative AI (Claude) was used to improve the narrative text and page layout. All charts and maps were built with Vega-Lite.</p>
     </footer>
 
   </div>

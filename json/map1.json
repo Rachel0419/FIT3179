@@ -1,11 +1,14 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 380,
-  "height": 380,
+  "width": 520,
+  "height": 480,
   "projection": {
     "type": "mercator",
-    "center": [139.75, 35.68],
-    "scale": 55000
+    "center": [
+      139.74,
+      35.675
+    ],
+    "scale": 80000
   },
   "layer": [
     {
@@ -19,8 +22,8 @@
       "mark": {
         "type": "geoshape",
         "fill": "#F2E8D5",
-        "stroke": "#8B8178",
-        "strokeWidth": 0.8
+        "stroke": "#BDB29E",
+        "strokeWidth": 0.5
       }
     },
     {
@@ -29,16 +32,14 @@
       },
       "transform": [
         {
-          "calculate": "datum.longitude > 139.77 ? 'Eastern & Waterfront Wards' : (datum.longitude > 139.68 ? 'Central Core Wards' : 'Western Suburbs & Tama')",
-          "as": "tokyo_region"
+          "calculate": "datum.longitude > 139.77 ? 'East' : (datum.longitude > 139.68 ? 'Central' : 'West')",
+          "as": "region"
         }
       ],
       "mark": {
         "type": "circle",
-        "size": 35,
-        "opacity": 0.8,
-        "stroke": "#FFFFFF",
-        "strokeWidth": 0.4
+        "size": 12,
+        "opacity": 0.4
       },
       "encoding": {
         "longitude": {
@@ -50,26 +51,239 @@
           "type": "quantitative"
         },
         "color": {
-          "field": "tokyo_region",
+          "field": "region",
           "type": "nominal",
-          "title": "Tokyo Region",
           "scale": {
-            "scheme": "set1"
+            "domain": [
+              "Central",
+              "East",
+              "West"
+            ],
+            "range": [
+              "#4e79a7",
+              "#f28e2b",
+              "#59a14f"
+            ]
+          },
+          "legend": {
+            "title": "Part of Tokyo",
+            "orient": "bottom-right",
+            "symbolSize": 140,
+            "symbolOpacity": 1
           }
         },
         "tooltip": [
-          {"field": "tokyo_region", "type": "nominal", "title": "Region Zone"},
-          {"field": "user_id", "type": "nominal", "title": "Tourist ID"},
-          {"field": "date_taken", "type": "nominal", "title": "Time Taken"},
-          {"field": "longitude", "type": "quantitative", "format": ".4f", "title": "Lon"},
-          {"field": "latitude", "type": "quantitative", "format": ".4f", "title": "Lat"}
+          {
+            "field": "region",
+            "type": "nominal",
+            "title": "Part of Tokyo"
+          }
         ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "id": "west|central",
+            "lon": 139.68,
+            "lat": 35.45
+          },
+          {
+            "id": "west|central",
+            "lon": 139.68,
+            "lat": 35.9
+          },
+          {
+            "id": "central|east",
+            "lon": 139.77,
+            "lat": 35.45
+          },
+          {
+            "id": "central|east",
+            "lon": 139.77,
+            "lat": 35.9
+          }
+        ]
+      },
+      "mark": {
+        "type": "line",
+        "stroke": "#6b6558",
+        "strokeDash": [
+          4,
+          4
+        ],
+        "strokeWidth": 1,
+        "opacity": 0.8
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "detail": {
+          "field": "id",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "transform": [
+        {
+          "calculate": "datum.longitude > 139.77 ? 'East' : (datum.longitude > 139.68 ? 'Central' : 'West')",
+          "as": "region"
+        },
+        {
+          "joinaggregate": [
+            {
+              "op": "count",
+              "as": "total"
+            }
+          ]
+        },
+        {
+          "aggregate": [
+            {
+              "op": "count",
+              "as": "n"
+            },
+            {
+              "op": "mean",
+              "field": "longitude",
+              "as": "lon"
+            },
+            {
+              "op": "max",
+              "field": "total",
+              "as": "total_max"
+            }
+          ],
+          "groupby": [
+            "region"
+          ]
+        },
+        {
+          "calculate": "datum.region + ' ' + format(datum.n / datum.total_max, '.1%')",
+          "as": "text"
+        },
+        {
+          "calculate": "35.79",
+          "as": "lat"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#ffffff",
+        "stroke": "#ffffff",
+        "strokeWidth": 4,
+        "strokeJoin": "round",
+        "opacity": 0.9
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "text",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "transform": [
+        {
+          "calculate": "datum.longitude > 139.77 ? 'East' : (datum.longitude > 139.68 ? 'Central' : 'West')",
+          "as": "region"
+        },
+        {
+          "joinaggregate": [
+            {
+              "op": "count",
+              "as": "total"
+            }
+          ]
+        },
+        {
+          "aggregate": [
+            {
+              "op": "count",
+              "as": "n"
+            },
+            {
+              "op": "mean",
+              "field": "longitude",
+              "as": "lon"
+            },
+            {
+              "op": "max",
+              "field": "total",
+              "as": "total_max"
+            }
+          ],
+          "groupby": [
+            "region"
+          ]
+        },
+        {
+          "calculate": "datum.region + ' ' + format(datum.n / datum.total_max, '.1%')",
+          "as": "text"
+        },
+        {
+          "calculate": "35.79",
+          "as": "lat"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#1f1f1f"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "text",
+          "type": "nominal"
+        }
       }
     }
   ],
   "config": {
     "view": {
       "stroke": null
+    },
+    "font": "Open Sans",
+    "legend": {
+      "labelFontSize": 11,
+      "titleFontSize": 11,
+      "titleFontWeight": 600,
+      "fillColor": "rgba(255,255,255,0.88)",
+      "padding": 6,
+      "cornerRadius": 3
     }
   }
 }

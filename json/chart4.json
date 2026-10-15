@@ -1,41 +1,128 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 380,
+  "width": 480,
   "height": 380,
   "data": {
     "url": "data/camera_dataset.csv"
   },
-  "mark": {"type": "circle", "opacity": 0.7},
+  "mark": {
+    "type": "circle",
+    "color": "#4e79a7",
+    "opacity": 0.45
+  },
   "encoding": {
     "x": {
       "field": "Release date",
       "type": "quantitative",
-      "title": "Release Year",
-      "scale": {"zero": false}
+      "title": "Release year",
+      "scale": {
+        "zero": false,
+        "padding": 12
+      },
+      "axis": {
+        "values": [
+          1994,
+          1996,
+          1998,
+          2000,
+          2002,
+          2004,
+          2006
+        ],
+        "format": "d",
+        "grid": false
+      }
     },
     "y": {
       "field": "Price",
       "type": "quantitative",
-      "title": "Price ($ USD, Log Scale)",
-      "scale": {"type": "log"}
+      "title": "Price (US$, log scale)",
+      "scale": {
+        "type": "log"
+      },
+      "axis": {
+        "values": [
+          10,
+          30,
+          100,
+          300,
+          1000,
+          3000,
+          10000
+        ],
+        "format": "$,.0f",
+        "grid": true
+      }
     },
     "size": {
       "field": "Effective pixels",
       "type": "quantitative",
-      "title": "Effective Pixels (MP)"
-    },
-    "color": {
-      "field": "Zoom wide (W)",
-      "type": "quantitative",
-      "title": "Zoom Wide (mm)",
-      "scale": {"scheme": "blues"}
+      "scale": {
+        "type": "linear",
+        "zero": true,
+        "range": [
+          10,
+          200
+        ]
+      },
+      "legend": {
+        "title": "Megapixels",
+        "orient": "top-left",
+        "values": [
+          2,
+          5,
+          10,
+          20
+        ],
+        "symbolFillColor": "#4e79a7",
+        "symbolOpacity": 0.6
+      }
     },
     "tooltip": [
-      {"field": "Model", "type": "nominal", "title": "Camera Model"},
-      {"field": "Release date", "type": "quantitative", "title": "Release Year"},
-      {"field": "Price", "type": "quantitative", "title": "Price ($)"},
-      {"field": "Effective pixels", "type": "quantitative", "title": "Effective Pixels"},
-      {"field": "Zoom wide (W)", "type": "quantitative", "title": "Zoom Wide"}
+      {
+        "field": "Model",
+        "type": "nominal",
+        "title": "Camera"
+      },
+      {
+        "field": "Release date",
+        "type": "quantitative",
+        "title": "Release year",
+        "format": "d"
+      },
+      {
+        "field": "Price",
+        "type": "quantitative",
+        "title": "Price (US$)",
+        "format": ",.0f"
+      },
+      {
+        "field": "Effective pixels",
+        "type": "quantitative",
+        "title": "Megapixels"
+      }
     ]
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Open Sans",
+    "axis": {
+      "labelFontSize": 11,
+      "titleFontSize": 12,
+      "titleFontWeight": 600,
+      "gridColor": "#ece6d6",
+      "domainColor": "#8B8178",
+      "tickColor": "#8B8178"
+    },
+    "legend": {
+      "labelFontSize": 11,
+      "titleFontSize": 11,
+      "titleFontWeight": 600,
+      "fillColor": "rgba(255,255,255,0.88)",
+      "padding": 6,
+      "cornerRadius": 3
+    }
   }
 }

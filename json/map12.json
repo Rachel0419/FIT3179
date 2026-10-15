@@ -1,27 +1,38 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 380,
-  "height": 380,
+  "width": 520,
+  "height": 480,
   "projection": {
     "type": "mercator",
-    "center": [139.75, 35.68],
-    "scale": 55000
+    "center": [
+      139.74,
+      35.675
+    ],
+    "scale": 80000
   },
   "params": [
     {
       "name": "selected_user",
-      "value": "71453924@N00",
+      "value": "95795770@N00",
       "bind": {
         "input": "select",
         "options": [
+          "95795770@N00",
           "71453924@N00",
           "24256658@N06",
-          "27889738@N07",
-          "38121641@N03",
           "8819274@N04",
-          "95795770@N00"
+          "27889738@N07",
+          "38121641@N03"
         ],
-        "name": "Select Tourist ID: "
+        "labels": [
+          "Visitor A · 419 photos",
+          "Visitor B · 419 photos",
+          "Visitor C · 291 photos",
+          "Visitor D · 204 photos",
+          "Visitor E · 144 photos",
+          "Visitor F · 120 photos"
+        ],
+        "name": "Choose a visitor: "
       }
     }
   ],
@@ -37,8 +48,29 @@
       "mark": {
         "type": "geoshape",
         "fill": "#F2E8D5",
-        "stroke": "#8B8178",
-        "strokeWidth": 0.8
+        "stroke": "#BDB29E",
+        "strokeWidth": 0.5
+      }
+    },
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "mark": {
+        "type": "circle",
+        "size": 5,
+        "color": "#8B8178",
+        "opacity": 0.14
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        }
       }
     },
     {
@@ -47,15 +79,19 @@
       },
       "transform": [
         {
+          "calculate": "toNumber(split(datum['photo/video_page_url'], '/')[5])",
+          "as": "pid"
+        },
+        {
           "filter": "datum.user_id == selected_user"
         }
       ],
       "mark": {
         "type": "line",
-        "interpolate": "monotone",
-        "strokeWidth": 2.5,
-        "color": "#2563eb",
-        "opacity": 0.75
+        "interpolate": "linear",
+        "strokeWidth": 1.2,
+        "color": "#4e79a7",
+        "opacity": 0.5
       },
       "encoding": {
         "longitude": {
@@ -67,8 +103,8 @@
           "type": "quantitative"
         },
         "order": {
-          "field": "date_taken",
-          "type": "temporal"
+          "field": "pid",
+          "type": "quantitative"
         }
       }
     },
@@ -78,15 +114,193 @@
       },
       "transform": [
         {
+          "calculate": "toNumber(split(datum['photo/video_page_url'], '/')[5])",
+          "as": "pid"
+        },
+        {
           "filter": "datum.user_id == selected_user"
+        },
+        {
+          "window": [
+            {
+              "op": "row_number",
+              "as": "seq"
+            }
+          ],
+          "sort": [
+            {
+              "field": "pid",
+              "order": "ascending"
+            }
+          ]
         }
       ],
       "mark": {
         "type": "circle",
-        "size": 45,
-        "color": "#1d4ed8",
+        "size": 26,
+        "color": "#2f5d8a",
+        "opacity": 0.85,
         "stroke": "#ffffff",
-        "strokeWidth": 1,
+        "strokeWidth": 0.6
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {
+            "field": "seq",
+            "type": "quantitative",
+            "title": "Photo no. (by photo ID)"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "transform": [
+        {
+          "calculate": "toNumber(split(datum['photo/video_page_url'], '/')[5])",
+          "as": "pid"
+        },
+        {
+          "filter": "datum.user_id == selected_user"
+        },
+        {
+          "window": [
+            {
+              "op": "row_number",
+              "as": "seq"
+            }
+          ],
+          "sort": [
+            {
+              "field": "pid",
+              "order": "ascending"
+            }
+          ]
+        },
+        {
+          "filter": "datum.seq == 1"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "size": 150,
+        "color": "#59a14f",
+        "opacity": 1,
+        "stroke": "#ffffff",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "transform": [
+        {
+          "calculate": "toNumber(split(datum['photo/video_page_url'], '/')[5])",
+          "as": "pid"
+        },
+        {
+          "filter": "datum.user_id == selected_user"
+        },
+        {
+          "window": [
+            {
+              "op": "row_number",
+              "as": "rseq"
+            }
+          ],
+          "sort": [
+            {
+              "field": "pid",
+              "order": "descending"
+            }
+          ]
+        },
+        {
+          "filter": "datum.rseq == 1"
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "shape": "diamond",
+        "filled": true,
+        "size": 230,
+        "color": "#e15759",
+        "opacity": 1,
+        "stroke": "#ffffff",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "transform": [
+        {
+          "calculate": "toNumber(split(datum['photo/video_page_url'], '/')[5])",
+          "as": "pid"
+        },
+        {
+          "filter": "datum.user_id == selected_user"
+        },
+        {
+          "window": [
+            {
+              "op": "row_number",
+              "as": "seq"
+            }
+          ],
+          "sort": [
+            {
+              "field": "pid",
+              "order": "ascending"
+            }
+          ]
+        },
+        {
+          "filter": "datum.seq == 1"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 12,
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#ffffff",
+        "stroke": "#ffffff",
+        "strokeWidth": 4,
+        "strokeJoin": "round",
         "opacity": 0.9
       },
       "encoding": {
@@ -98,12 +312,9 @@
           "field": "latitude",
           "type": "quantitative"
         },
-        "tooltip": [
-          {"field": "user_id", "type": "nominal", "title": "Tourist ID"},
-          {"field": "date_taken", "type": "temporal", "title": "Time Taken"},
-          {"field": "longitude", "type": "quantitative", "format": ".4f", "title": "Longitude"},
-          {"field": "latitude", "type": "quantitative", "format": ".4f", "title": "Latitude"}
-        ]
+        "text": {
+          "value": "Start"
+        }
       }
     },
     {
@@ -112,25 +323,37 @@
       },
       "transform": [
         {
+          "calculate": "toNumber(split(datum['photo/video_page_url'], '/')[5])",
+          "as": "pid"
+        },
+        {
           "filter": "datum.user_id == selected_user"
         },
         {
-          "window": [{"op": "row_number", "as": "dest_rank"}],
-          "sort": [{"field": "date_taken", "order": "descending"}]
+          "window": [
+            {
+              "op": "row_number",
+              "as": "seq"
+            }
+          ],
+          "sort": [
+            {
+              "field": "pid",
+              "order": "ascending"
+            }
+          ]
         },
         {
-          "filter": "datum.dest_rank == 1"
+          "filter": "datum.seq == 1"
         }
       ],
       "mark": {
-        "type": "point",
-        "shape": "diamond",
-        "size": 240,
-        "color": "#dc2626",
-        "filled": true,
-        "stroke": "#ffffff",
-        "strokeWidth": 2,
-        "opacity": 1
+        "type": "text",
+        "align": "left",
+        "dx": 12,
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#1f1f1f"
       },
       "encoding": {
         "longitude": {
@@ -141,18 +364,132 @@
           "field": "latitude",
           "type": "quantitative"
         },
-        "tooltip": [
-          {"field": "user_id", "type": "nominal", "title": "Tourist ID"},
-          {"field": "date_taken", "type": "temporal", "title": "Final Destination Time"},
-          {"field": "longitude", "type": "quantitative", "format": ".4f", "title": "Dest Lon"},
-          {"field": "latitude", "type": "quantitative", "format": ".4f", "title": "Dest Lat"}
-        ]
+        "text": {
+          "value": "Start"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "transform": [
+        {
+          "calculate": "toNumber(split(datum['photo/video_page_url'], '/')[5])",
+          "as": "pid"
+        },
+        {
+          "filter": "datum.user_id == selected_user"
+        },
+        {
+          "window": [
+            {
+              "op": "row_number",
+              "as": "rseq"
+            }
+          ],
+          "sort": [
+            {
+              "field": "pid",
+              "order": "descending"
+            }
+          ]
+        },
+        {
+          "filter": "datum.rseq == 1"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 12,
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#ffffff",
+        "stroke": "#ffffff",
+        "strokeWidth": 4,
+        "strokeJoin": "round",
+        "opacity": 0.9
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "End"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "transform": [
+        {
+          "calculate": "toNumber(split(datum['photo/video_page_url'], '/')[5])",
+          "as": "pid"
+        },
+        {
+          "filter": "datum.user_id == selected_user"
+        },
+        {
+          "window": [
+            {
+              "op": "row_number",
+              "as": "rseq"
+            }
+          ],
+          "sort": [
+            {
+              "field": "pid",
+              "order": "descending"
+            }
+          ]
+        },
+        {
+          "filter": "datum.rseq == 1"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 12,
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#1f1f1f"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "End"
+        }
       }
     }
   ],
   "config": {
     "view": {
       "stroke": null
+    },
+    "font": "Open Sans",
+    "legend": {
+      "labelFontSize": 11,
+      "titleFontSize": 11,
+      "titleFontWeight": 600,
+      "fillColor": "rgba(255,255,255,0.88)",
+      "padding": 6,
+      "cornerRadius": 3
     }
   }
 }

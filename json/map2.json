@@ -1,16 +1,19 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 380,
-  "height": 380,
+  "width": 520,
+  "height": 480,
   "projection": {
     "type": "mercator",
-    "center": [139.75, 35.68],
-    "scale": 55000
+    "center": [
+      139.74,
+      35.675
+    ],
+    "scale": 80000
   },
   "layer": [
     {
       "data": {
-        "url": "https://raw.githubusercontent.com/dataofjapan/land/master/japan.topojson", 
+        "url": "https://raw.githubusercontent.com/dataofjapan/land/master/japan.topojson",
         "format": {
           "type": "topojson",
           "feature": "japan"
@@ -19,54 +22,282 @@
       "mark": {
         "type": "geoshape",
         "fill": "#F2E8D5",
-        "stroke": "#8B8178",
-        "strokeWidth": 0.8
+        "stroke": "#BDB29E",
+        "strokeWidth": 0.5
       }
     },
     {
       "data": {
         "url": "data/tokyo_clean.csv"
       },
+      "transform": [
+        {
+          "calculate": "floor(datum.longitude * 50) / 50",
+          "as": "clon"
+        },
+        {
+          "calculate": "floor(datum.latitude * 50) / 50",
+          "as": "clat"
+        },
+        {
+          "aggregate": [
+            {
+              "op": "count",
+              "as": "n"
+            }
+          ],
+          "groupby": [
+            "clon",
+            "clat"
+          ]
+        },
+        {
+          "window": [
+            {
+              "op": "rank",
+              "as": "rnk"
+            }
+          ],
+          "sort": [
+            {
+              "field": "n",
+              "order": "descending"
+            }
+          ]
+        },
+        {
+          "filter": "datum.rnk <= 10"
+        },
+        {
+          "calculate": "datum.clon + 0.01",
+          "as": "lon"
+        },
+        {
+          "calculate": "datum.clat + 0.01",
+          "as": "lat"
+        }
+      ],
       "mark": {
         "type": "circle",
-        "filled": true,
+        "color": "#4e79a7",
         "opacity": 0.7,
-        "stroke": "#FFFFFF",
-        "strokeWidth": 0.5
+        "stroke": "#ffffff",
+        "strokeWidth": 1.2
       },
       "encoding": {
         "longitude": {
-          "field": "longitude",
+          "field": "lon",
           "type": "quantitative"
         },
         "latitude": {
-          "field": "latitude",
+          "field": "lat",
           "type": "quantitative"
         },
         "size": {
-          "field": "x",
+          "field": "n",
           "type": "quantitative",
-          "title": "Spatial X Coord",
-          "scale": {"range": [10, 300]}
-        },
-        "color": {
-          "field": "y",
-          "type": "quantitative",
-          "title": "Spatial Y Coord",
-          "scale": {"scheme": "viridis"}
+          "scale": {
+            "type": "linear",
+            "zero": true,
+            "domain": [
+              0,
+              720
+            ],
+            "range": [
+              0,
+              813
+            ]
+          },
+          "legend": {
+            "title": "Photos in area",
+            "orient": "bottom-right",
+            "values": [
+              200,
+              400,
+              700
+            ],
+            "symbolFillColor": "#4e79a7",
+            "symbolOpacity": 0.7
+          }
         },
         "tooltip": [
-          {"field": "user_id", "type": "nominal", "title": "User ID"},
-          {"field": "date_taken", "type": "nominal", "title": "Time Taken"},
-          {"field": "longitude", "type": "quantitative", "format": ".4f", "title": "Lon"},
-          {"field": "latitude", "type": "quantitative", "format": ".4f", "title": "Lat"}
+          {
+            "field": "n",
+            "type": "quantitative",
+            "title": "Photos in this area"
+          }
         ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "lon": 139.8165,
+            "lat": 35.67,
+            "text": "Ginza–Tsukiji"
+          },
+          {
+            "lon": 139.7452,
+            "lat": 35.71,
+            "text": "Ueno"
+          },
+          {
+            "lon": 139.8384,
+            "lat": 35.69,
+            "text": "Tokyo Station–Akihabara"
+          },
+          {
+            "lon": 139.6775,
+            "lat": 35.67,
+            "text": "Harajuku"
+          },
+          {
+            "lon": 139.7214,
+            "lat": 35.7021,
+            "text": "Imperial Palace"
+          },
+          {
+            "lon": 139.8192,
+            "lat": 35.71,
+            "text": "Asakusa"
+          },
+          {
+            "lon": 139.6785,
+            "lat": 35.69,
+            "text": "Shinjuku"
+          },
+          {
+            "lon": 139.7386,
+            "lat": 35.6552,
+            "text": "Roppongi"
+          },
+          {
+            "lon": 139.6814,
+            "lat": 35.65,
+            "text": "Shibuya"
+          },
+          {
+            "lon": 139.7632,
+            "lat": 35.63,
+            "text": "Shinagawa"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#ffffff",
+        "stroke": "#ffffff",
+        "strokeWidth": 4,
+        "strokeJoin": "round",
+        "opacity": 0.9
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "text",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "lon": 139.8165,
+            "lat": 35.67,
+            "text": "Ginza–Tsukiji"
+          },
+          {
+            "lon": 139.7452,
+            "lat": 35.71,
+            "text": "Ueno"
+          },
+          {
+            "lon": 139.8384,
+            "lat": 35.69,
+            "text": "Tokyo Station–Akihabara"
+          },
+          {
+            "lon": 139.6775,
+            "lat": 35.67,
+            "text": "Harajuku"
+          },
+          {
+            "lon": 139.7214,
+            "lat": 35.7021,
+            "text": "Imperial Palace"
+          },
+          {
+            "lon": 139.8192,
+            "lat": 35.71,
+            "text": "Asakusa"
+          },
+          {
+            "lon": 139.6785,
+            "lat": 35.69,
+            "text": "Shinjuku"
+          },
+          {
+            "lon": 139.7386,
+            "lat": 35.6552,
+            "text": "Roppongi"
+          },
+          {
+            "lon": 139.6814,
+            "lat": 35.65,
+            "text": "Shibuya"
+          },
+          {
+            "lon": 139.7632,
+            "lat": 35.63,
+            "text": "Shinagawa"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#1f1f1f"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "text",
+          "type": "nominal"
+        }
       }
     }
   ],
   "config": {
     "view": {
       "stroke": null
+    },
+    "font": "Open Sans",
+    "legend": {
+      "labelFontSize": 11,
+      "titleFontSize": 11,
+      "titleFontWeight": 600,
+      "fillColor": "rgba(255,255,255,0.88)",
+      "padding": 6,
+      "cornerRadius": 3
     }
   }
 }

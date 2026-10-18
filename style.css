@@ -68,7 +68,9 @@ h1, h2, h3, h4, .act-label, .eyebrow, .glossary h4, .brand, .footer-label {
   padding: 4px 0;
   border-bottom: 2px solid transparent;
 }
-.topnav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.topnav a { white-space: nowrap; }
+.topnav a:hover,
+.topnav a.active { color: var(--accent); border-bottom-color: var(--accent); }
 
 .dashboard-container {
   max-width: 1120px;
@@ -385,3 +387,9 @@ h1, h2, h3, h4, .act-label, .eyebrow, .glossary h4, .brand, .footer-label {
   .conclusion { padding: 24px 22px; }
 }
 .vis-container .vega-bindings:empty { display: none; }
+
+/* Let the section nav scroll sideways on narrow screens instead of wrapping */
+@media (max-width: 860px) {
+  .topnav-inner { overflow-x: auto; scrollbar-width: none; }
+  .topnav-inner::-webkit-scrollbar { display: none; }
+}

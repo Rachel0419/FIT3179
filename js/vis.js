@@ -17,3 +17,14 @@ draw("#chart8", "json/chart8.json");
 draw("#chart9", "json/chart9.json");
 draw("#chart10", "json/chart10.json");
 draw("#chart11", "json/chart11.json");
+
+// Highlight the nav link of the section currently on screen
+const navLinks = document.querySelectorAll(".topnav a");
+const sections = [...navLinks].map(a => document.querySelector(a.getAttribute("href")));
+const setActive = () => {
+  let current = sections[0];
+  for (const s of sections) if (s.getBoundingClientRect().top < 120) current = s;
+  navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + current.id));
+};
+window.addEventListener("scroll", setActive, { passive: true });
+setActive();

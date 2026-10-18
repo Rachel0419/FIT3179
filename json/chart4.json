@@ -21,8 +21,8 @@
   ],
   "mark": {
     "type": "circle",
-    "color": "#4e79a7",
-    "opacity": 0.35,
+    "color": "#2f5d8a",
+    "opacity": 0.6,
     "stroke": null
   },
   "encoding": {
@@ -93,8 +93,8 @@
           10,
           20
         ],
-        "symbolFillColor": "#4e79a7",
-        "symbolOpacity": 0.5,
+        "symbolFillColor": "#2f5d8a",
+        "symbolOpacity": 0.6,
         "symbolStrokeWidth": 0
       }
     },

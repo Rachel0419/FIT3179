@@ -1,31 +1,163 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 380,
-  "height": 380,
+  "width": 400,
+  "height": 300,
   "data": {
     "url": "data/camera_dataset.csv"
   },
-  "mark": {
-    "type": "line",
-    "point": true,
-    "strokeWidth": 3
-  },
-  "encoding": {
-    "x": {
-      "field": "Release date",
-      "type": "quantitative",
-      "title": "Release Year",
-      "scale": {"zero": false}
+  "transform": [
+    {
+      "calculate": "toNumber(datum.Price)",
+      "as": "Price"
     },
-    "y": {
-      "aggregate": "median",
-      "field": "Price",
-      "type": "quantitative",
-      "title": "Median Price ($ USD)"
+    {
+      "calculate": "toNumber(datum['Release date'])",
+      "as": "year"
     },
-    "tooltip": [
-      {"field": "Release date", "type": "quantitative", "title": "Year"},
-      {"aggregate": "median", "field": "Price", "type": "quantitative", "title": "Median Price ($)", "format": ".2f"}
-    ]
+    {
+      "aggregate": [
+        {
+          "op": "median",
+          "field": "Price",
+          "as": "median"
+        },
+        {
+          "op": "count",
+          "as": "models"
+        }
+      ],
+      "groupby": [
+        "year"
+      ]
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "strokeDash": [
+          4,
+          4
+        ],
+        "color": "#9aa5b1"
+      },
+      "encoding": {
+        "y": {
+          "datum": 200
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "line",
+        "color": "#2f5d8a",
+        "strokeWidth": 2.5,
+        "point": {
+          "filled": true,
+          "size": 45,
+          "color": "#2f5d8a"
+        }
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative",
+          "title": "Release year",
+          "scale": {
+            "domain": [
+              1994,
+              2007
+            ],
+            "nice": false
+          },
+          "axis": {
+            "format": "d",
+            "values": [
+              1994,
+              1996,
+              1998,
+              2000,
+              2002,
+              2004,
+              2006
+            ],
+            "grid": false
+          }
+        },
+        "y": {
+          "field": "median",
+          "type": "quantitative",
+          "title": "Median price (US$)",
+          "scale": {
+            "domain": [
+              0,
+              300
+            ]
+          },
+          "axis": {
+            "format": "$,.0f",
+            "tickCount": 4,
+            "grid": true,
+            "domain": false
+          }
+        },
+        "tooltip": [
+          {
+            "field": "year",
+            "type": "quantitative",
+            "title": "Year",
+            "format": "d"
+          },
+          {
+            "field": "median",
+            "type": "quantitative",
+            "title": "Median price ($)",
+            "format": ",.0f"
+          },
+          {
+            "field": "models",
+            "type": "quantitative",
+            "title": "Models released"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#1b2430"
+      },
+      "encoding": {
+        "x": {
+          "datum": 2002
+        },
+        "y": {
+          "datum": 270
+        },
+        "text": {
+          "value": "Typical price has stayed near $200 since 1997"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Open Sans",
+    "axis": {
+      "labelFontSize": 11,
+      "titleFontSize": 12,
+      "titleFontWeight": 600,
+      "titleColor": "#1b2430",
+      "labelColor": "#5b6776",
+      "gridColor": "#edf0f5",
+      "domainColor": "#9aa5b1",
+      "tickColor": "#9aa5b1",
+      "titlePadding": 10
+    }
   }
 }

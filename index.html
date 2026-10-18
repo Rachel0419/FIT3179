@@ -18,110 +18,123 @@
 </head>
 <body>
 
+  <!-- Sticky section nav: links scroll to each section on the same page -->
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <span class="brand">Through the Lens: Tokyo</span>
+      <a href="#hotspots">Hotspots</a>
+      <a href="#moves">Moves</a>
+      <a href="#price">Price</a>
+      <a href="#over-time">Over time</a>
+      <a href="#camera-bag">Camera bag</a>
+      <a href="#summary">Summary</a>
+    </div>
+  </nav>
+
   <div class="dashboard-container">
 
     <!-- Boxed title (DV1 style) -->
     <header class="dashboard-header">
       <p class="eyebrow">FIT3179 Data Visualisation 2 &middot; Monash University</p>
       <h1>Through the Lens: Tokyo</h1>
-      <p class="subtitle">Where do visitors point their cameras in Tokyo, and what kind of camera is in their hands? Follow the photos first, then the gear behind them.</p>
+      <p class="subtitle">Where do visitors point their cameras in Tokyo, and what cameras are they holding?</p>
     </header>
 
     <!-- Intro: why, who, and plain-language terms -->
     <div class="intro-grid">
       <p class="narrative">
-        Planning a trip to Tokyo? Millions of visitors share geotagged photos online, and each photo quietly records where its owner stood. Put together, those photos show which parts of the city draw the crowds and how people move between them. This page then turns to the cameras themselves: what they cost, how they have changed, and which brands sit where on the market. It is written for curious travellers and photography fans, so no statistics background is needed.
+        Planning a trip to Tokyo? Every geotagged photo records where its owner stood. Together, they show which parts of the city draw the crowds and how people move between them. We then look at the cameras themselves: what they cost, how they changed and how brands compare.
       </p>
       <aside class="glossary">
         <h4>Quick terms</h4>
         <dl>
           <dt>Geotag</dt>
-          <dd>A photo's saved location, so it can be placed on a map.</dd>
+          <dd>A photo&rsquo;s saved location.</dd>
           <dt>Megapixels</dt>
-          <dd>How many million dots make up a photo. More megapixels means finer detail.</dd>
+          <dd>Millions of dots in a photo; more means finer detail.</dd>
           <dt>Zoom (focal length)</dt>
-          <dd>How far a lens can bring a faraway scene closer.</dd>
+          <dd>How close a lens brings a faraway scene.</dd>
           <dt>Log scale</dt>
-          <dd>An axis where each step multiplies the value, so cheap and expensive items fit on one chart.</dd>
+          <dd>Each step multiplies the value, so cheap and expensive items fit on one axis.</dd>
         </dl>
       </aside>
     </div>
 
     <!-- ============ ACT I ============ -->
     <p class="act-label">Act I &middot; The city</p>
-    <h2 class="section-title">Where Tokyo Gets Photographed</h2>
+    <h2 id="hotspots" class="section-title">Where Tokyo Gets Photographed</h2>
     <p class="narrative">
-      Start with the big picture. The left map places one dot for every photo, so you can see exactly where people stood. Because central Tokyo is so busy that dots start to overlap, the right map counts the photos in each 1 km square and shades them, which makes the busiest streets easy to spot.
+      The left map shows one dot per photo. Where dots overlap, the right map counts photos in each 1 km square so the busiest areas stand out.
     </p>
 
     <div class="chart-row">
       <div class="chart-half">
         <h4 class="chart-title">Every photo as a dot</h4>
         <div id="map_dot" class="vis-container"></div>
-        <p class="insight">Each dot is one geotagged photo (10,000 in total). Darker patches are where many photos overlap. Hover over a dot to see its position.</p>
+        <p class="insight">Each dot is one photo (10,000 in total).</p>
       </div>
       <div class="chart-half">
         <h4 class="chart-title">Photo density in 1 km squares</h4>
         <div id="map_bin" class="vis-container"></div>
-        <p class="insight">Darker squares hold more photos. Squares with fewer than 3 photos are hidden to keep the map clean.</p>
+        <p class="insight">Darker squares hold more photos. Squares with fewer than 3 are hidden.</p>
       </div>
     </div>
 
-    <h2 class="section-title">The Ten Busiest Areas and the Moves Between Them</h2>
+    <h2 id="moves" class="section-title">The Ten Busiest Areas and the Moves Between Them</h2>
     <p class="narrative">
-      Zoom in on the centre. The left map sizes a circle by how many photos were taken in each of the ten busiest areas, which together hold about 46% of all photos. The right map then follows visitors: an arrow joins two areas when a visitor photographed one and then the other, and thicker arrows mean more visitors made that move.
+      The ten busiest areas hold 46% of all photos. Arrows on the right show where visitors went next; thicker arrows mean more visitors made that move.
     </p>
 
     <div class="chart-row">
       <div class="chart-half">
         <h4 class="chart-title">Ten busiest photo areas</h4>
         <div id="map_symbol" class="vis-container"></div>
-        <p class="insight">Bigger circles mean more photos. Each area is a patch of about 2 km across; names are approximate. Hover over a circle for its name and share of all photos.</p>
+        <p class="insight">Bigger circles mean more photos. Each area is about 2 km across.</p>
       </div>
       <div class="chart-half">
         <h4 class="chart-title">Popular moves between hotspots</h4>
         <div id="map_flow" class="vis-container"></div>
-        <p class="insight">Numbers match the circles on the left: 1 Ginza&ndash;Tsukiji, 2 Ueno, 3 Tokyo Station&ndash;Akihabara, 4 Harajuku, 5 Imperial Palace, 6 Asakusa, 7 Shinjuku, 8 Roppongi, 9 Shibuya, 10 Shinagawa. Arrows point from the first area photographed to the next. Only moves between these ten areas are counted (866 in total); use the slider to show only the busiest moves.</p>
+        <p class="insight">Numbers match the circles on the left. Use the slider to show only the busiest moves (866 moves in total).</p>
       </div>
     </div>
 
-    <p class="takeaway">Photos pile up in a few central hotspots, and the busiest moves link close neighbours such as Ginza, Tokyo Station and Ueno, or Harajuku and Shibuya.</p>
+    <p class="takeaway">Photos pile up in a few central hotspots, and most moves link close neighbours such as Ginza, Tokyo Station and Ueno.</p>
 
     <!-- ============ ACT II ============ -->
     <p class="act-label">Act II &middot; The camera</p>
-    <h2 class="section-title">What Does a Camera Cost?</h2>
+    <h2 id="price" class="section-title">What Does a Camera Cost?</h2>
     <p class="narrative">
-      Behind every photo is a camera, and cameras vary enormously. Some are simple, budget-friendly models. Others are professional bodies built for demanding conditions. The first chart plots every camera by release year and price, with bigger circles for more megapixels. The second compares how prices are spread within each brand. Both use a log scale, so one step up means many times the price.
+      Behind every photo is a camera, from budget compacts to professional bodies. Both charts use a log scale for price.
     </p>
 
     <div class="chart-row">
       <div class="chart-half">
         <h4 class="chart-title">Camera price by release year</h4>
         <div id="chart4" class="vis-container"></div>
-        <p class="insight">Each circle is one camera, and bigger circles have more megapixels. Circles are spread slightly sideways within their year so that cameras released in the same year don&rsquo;t hide each other.</p>
+        <p class="insight">Each circle is one camera; bigger circles have more megapixels.</p>
       </div>
       <div class="chart-half">
         <h4 class="chart-title">Price range within each brand</h4>
         <div id="chart5" class="vis-container"></div>
-        <p class="insight">Each box covers the middle half of a brand's prices, and the dark line is its typical (median) price. Dots are unusually high or low prices. Only brands with at least 15 models and five or more different prices are shown, because the others have too little price variety to compare.</p>
+        <p class="insight">Each box covers the middle half of a brand&rsquo;s prices; the dark line is the median (middle) price. Dots are unusual prices.</p>
       </div>
     </div>
 
-    <h2 class="section-title">How Cameras Changed Over Time</h2>
+    <h2 id="over-time" class="section-title">How Cameras Changed Over Time</h2>
     <p class="narrative">
-      Cameras have not stood still. Across the years covered by the dataset, manufacturers released new models, sharper sensors arrived, and prices moved. These three charts follow that story: what the typical camera cost each year, how many new models appeared, and how image resolution grew.
+      Over the years, prices shifted, new models multiplied and sensors grew sharper.
     </p>
 
     <div class="chart-row">
       <div class="chart-half">
         <h4 class="chart-title">Median price evolution</h4>
         <div id="chart6" class="vis-container"></div>
-        <p class="insight">The median is the middle price, so a few extreme models do not distort it.</p>
+        <p class="insight">The median is the middle price, so extreme models don&rsquo;t distort it.</p>
       </div>
       <div class="chart-half">
         <h4 class="chart-title">Model releases per year</h4>
         <div id="chart8" class="vis-container"></div>
-        <p class="insight">Each stem is one year. New releases climbed from a handful in the mid-1990s to 163 models in 2007.</p>
+        <p class="insight">New releases climbed from a handful in the mid-1990s to 163 in 2007.</p>
       </div>
     </div>
 
@@ -131,25 +144,25 @@
         <div id="chart11" class="vis-container"></div>
       </div>
       <p class="narrative">
-        Resolution is the number of pixels in a photo. Following the maximum resolution year by year shows how quickly sensors improved. A sharper sensor lets a traveller crop into a skyline shot or print a large photo of Shibuya at night without it turning blurry.
+        Resolution is the number of pixels in a photo. Higher resolution lets you crop or print a Shibuya night shot without blur.
       </p>
     </div>
 
-    <h2 class="section-title">What Is in the Camera Bag?</h2>
+    <h2 id="camera-bag" class="section-title">What Is in the Camera Bag?</h2>
     <p class="narrative">
-      Finally, the details that shape how a camera feels to use: how far the lens zooms, which memory cards it takes, and how each brand positions itself on price. For a traveller, zoom decides whether you can capture Tokyo Tower from across the park, and storage decides which cards you need to pack.
+      Zoom decides whether you can capture Tokyo Tower from across the park; storage decides which cards to pack.
     </p>
 
     <div class="chart-row">
       <div class="chart-half">
         <h4 class="chart-title">Lens zoom vs price density</h4>
         <div id="chart7" class="vis-container"></div>
-        <p class="insight">Darker areas show where many cameras share a similar zoom and price.</p>
+        <p class="insight">Darker cells hold more cameras.</p>
       </div>
       <div class="chart-half">
         <h4 class="chart-title">Memory included with the camera</h4>
         <div id="chart9" class="vis-container"></div>
-        <p class="insight">Each square is 1% of the camera models that come with a memory card. Almost a third include a 16 MB card, and the five most common sizes cover 71%.</p>
+        <p class="insight">Each square is 1% of models with a memory card. Almost a third include 16 MB.</p>
       </div>
     </div>
 
@@ -159,18 +172,18 @@
         <div id="chart10" class="vis-container"></div>
       </div>
       <p class="narrative">
-        Each line runs from a brand&rsquo;s cheapest model (grey dot) to its most expensive (black dot), and the orange diamond marks its average price. Brands are ranked by average price, so those at the top lean towards premium equipment while those at the bottom target everyday, budget-minded buyers. Only brands with at least 15 models and more than one price are shown.
+        Each line runs from a brand&rsquo;s cheapest model (grey) to its priciest (black); the orange diamond is the average. Premium brands sit at the top, budget brands at the bottom.
       </p>
     </div>
 
     <!-- ============ CONCLUSION ============ -->
-    <section class="conclusion">
+    <section id="summary" class="conclusion">
       <h2>Putting It Together</h2>
       <p>
-        The photos show that Tokyo is not photographed evenly: visitors gather in a few hotspots and spread out along routes between them. The camera data shows that the tools used to capture those moments range from simple to professional, and have improved in resolution and variety over time.
+        Tokyo is not photographed evenly: visitors gather in a few hotspots and move between neighbours. The cameras behind those photos range from simple to professional, and grew sharper and more varied over time.
       </p>
       <p>
-        Whether you are choosing where to point your lens or which lens to buy, these charts give you a starting point for planning your own trip through Tokyo.
+        Use these charts to plan where to point your lens, and which one to bring.
       </p>
     </section>
 

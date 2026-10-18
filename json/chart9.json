@@ -5,28 +5,64 @@
   "data": {
     "url": "data/camera_dataset.csv"
   },
-  "mark": "bar",
-  "encoding": {
-    "x": {
-      "aggregate": "count",
-      "type": "quantitative",
-      "title": "Number of Camera Models"
+  "transform": [
+    {
+      "filter": "datum['Storage included'] != null && datum['Storage included'] != 0 && datum['Storage included'] != '0' && datum['Storage included'] != '0.0'"
     },
+    {
+      "aggregate": [{"op": "count", "as": "ModelCount"}],
+      "groupby": ["Storage included"]
+    },
+    {
+      "window": [{"op": "rank", "as": "rank"}],
+      "sort": [{"field": "ModelCount", "order": "descending"}]
+    },
+    {
+      "filter": "datum.rank <= 10"
+    }
+  ],
+  "mark": {
+    "type": "bar",
+    "cornerRadiusEnd": 4,
+    "height": {"band": 0.75}
+  },
+  "encoding": {
     "y": {
       "field": "Storage included",
       "type": "nominal",
       "sort": "-x",
-      "title": "Storage / Memory Type"
+      "title": "Included Storage Capacity (MB)",
+      "axis": {
+        "labelFontSize": 11,
+        "titleFontSize": 12,
+        "titleFontWeight": 600,
+        "grid": false
+      }
+    },
+    "x": {
+      "field": "ModelCount",
+      "type": "quantitative",
+      "title": "Number of Camera Models",
+      "axis": {
+        "grid": true,
+        "gridColor": "#f4f4f5",
+        "titleFontSize": 12,
+        "titleFontWeight": 600
+      }
     },
     "color": {
-      "field": "Storage included",
-      "type": "nominal",
-      "legend": null,
-      "scale": {"scheme": "tableau10"}
+      "condition": {"test": "datum.rank == 1", "value": "#4e79a7"},
+      "value": "#cbd5e1"
     },
     "tooltip": [
-      {"field": "Storage included", "type": "nominal", "title": "Storage Type"},
-      {"aggregate": "count", "type": "quantitative", "title": "Model Count"}
+      {"field": "Storage included", "type": "nominal", "title": "Storage (MB)"},
+      {"field": "ModelCount", "type": "quantitative", "title": "Models Supported"}
     ]
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Inter, sans-serif"
   }
 }

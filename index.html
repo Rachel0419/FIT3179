@@ -18,6 +18,16 @@
 </head>
 <body>
 
+  <nav class="topnav" aria-label="Sections">
+    <div class="topnav-inner">
+      <span class="brand">Through the Lens: Tokyo</span>
+      <a href="#act1">The city</a>
+      <a href="#act2">The camera</a>
+      <a href="#conclusion">Conclusion</a>
+      <a href="#sources">Sources</a>
+    </div>
+  </nav>
+
   <div class="dashboard-container">
 
     <!-- Boxed title (DV1 style) -->
@@ -25,6 +35,11 @@
       <p class="eyebrow">FIT3179 Data Visualisation 2 &middot; Monash University</p>
       <h1>Through the Lens: Tokyo</h1>
       <p class="subtitle">Where do visitors point their cameras in Tokyo, and what kind of camera is in their hands? Follow the photos first, then the gear behind them.</p>
+      <ul class="stat-chips">
+        <li><strong>10,000</strong> geotagged photos</li>
+        <li><strong>1,038</strong> camera models</li>
+        <li><strong>2</strong> acts: the city, then the camera</li>
+      </ul>
     </header>
 
     <!-- Intro: why, who, and plain-language terms -->
@@ -48,51 +63,51 @@
     </div>
 
     <!-- ============ ACT I ============ -->
-    <p class="act-label">Act I &middot; The city</p>
-    <h2 class="section-title">Where Tokyo Gets Photographed</h2>
-    <p class="narrative">
-      Start with the big picture. Tokyo is made up of very different areas, from the busy central wards to the waterfront and the quieter west. The first map groups every geotagged photo by region, so you can see which areas attract the most attention. The second map zooms in on a single visitor: choose someone from the dropdown to see every place they took a photo, from their first photo to their last.
-    </p>
-
-    <div class="chart-row">
-      <div class="chart-half">
-        <h4 class="chart-title">Sightseeing distribution by region</h4>
-        <div id="map_region" class="vis-container"></div>
-        <p class="insight">Photos are split into three parts of Tokyo by longitude. The central part holds the most (about 58%), then the east (about 30%) and the west (about 13%).</p>
-      </div>
-      <div class="chart-half">
-        <h4 class="chart-title">Follow one visitor: individual photo trail</h4>
-        <div id="map_flow" class="vis-container"></div>
-        <p class="insight">Use the dropdown to switch visitors. The green dot is their first photo and the red diamond their last, in photo-ID order.</p>
-      </div>
+    <p class="act-label" id="act1">Act I &middot; The city</p>
+    <div class="section-head">
+      <h2 class="section-title">Where Tokyo Gets Photographed</h2>
+      <p class="narrative">Start with the big picture. The map shades Tokyo by how many photos were taken in each 1 km square, and the dashed outlines mark the ten busiest 2 km areas. The chart beside it ranks those ten areas, so you can see which names draw the most cameras.</p>
     </div>
 
-    <p class="takeaway">Some visitors stay in one neighbourhood, while others cover the whole city. The region map shows the crowd, and the photo trail shows the individual.</p>
-
-    <h2 class="section-title">Finding the Hotspots</h2>
-    <p class="narrative">
-      Individual trails add up. Plotting every photo as a dot just creates a blur, so the next two maps simplify in different ways. The first shows only the ten busiest areas, each named and sized by its photo count. The second divides all of Tokyo into small squares and shades each one by its photo count. Look for the places where both maps agree, because those are the true hotspots.
-    </p>
-
     <div class="chart-row">
+      <div class="chart-half">
+        <h4 class="chart-title">Photo density across Tokyo</h4>
+        <div id="map_region" class="vis-container"></div>
+        <p class="insight">Each square is about 1 km across; darker means more photos, and squares with fewer than 3 photos are hidden. Numbered outlines are the ten busiest areas. Hover over a number for its name.</p>
+      </div>
       <div class="chart-half">
         <h4 class="chart-title">The ten busiest photo areas</h4>
         <div id="map_bubble" class="vis-container"></div>
-        <p class="insight">Each circle is a patch of the city about 2 km across. A bigger circle means more photos. Area names are approximate.</p>
-      </div>
-      <div class="chart-half">
-        <h4 class="chart-title">Photo density across the city</h4>
-        <div id="map_grid" class="vis-container"></div>
-        <p class="insight">Each square is about 1 km across; darker means more photos. Squares with fewer than 3 photos are hidden.</p>
+        <p class="insight">Each bar is a patch of the city about 2 km across, numbered as on the map. Together these ten areas hold about 46% of all photos in the dataset. Area names are approximate.</p>
       </div>
     </div>
 
+    <div class="section-head">
+      <h2 class="section-title">How Visitors Move Between Hotspots</h2>
+      <p class="narrative">Hotspots are only half the story. The left map follows a single visitor from their first photo to their last, with nearby photos merged so the route stays readable. The right map adds up every visitor: each line joins two hotspots that a visitor photographed one after the other, and thicker lines mean more visitors made that move.</p>
+    </div>
+
+    <div class="chart-row">
+      <div class="chart-half">
+        <h4 class="chart-title">Follow one visitor: individual photo trail</h4>
+        <div id="map_flow" class="vis-container"></div>
+        <p class="insight">Nearby photos are merged into areas about 2 km across, and bigger circles mean more photos. Lines show routes this visitor used repeatedly; use the slider to show more or fewer. Green is their first photo and red their last, in photo-ID order.</p>
+      </div>
+      <div class="chart-half">
+        <h4 class="chart-title">Popular routes between hotspots</h4>
+        <div id="map_grid" class="vis-container"></div>
+        <p class="insight">Numbers match the ranking above: 1 Ginza&ndash;Tsukiji, 2 Ueno, 3 Tokyo Station&ndash;Akihabara, 4 Harajuku, 5 Imperial Palace, 6 Asakusa, 7 Shinjuku, 8 Roppongi, 9 Shibuya, 10 Shinagawa. Only moves between these ten areas are counted (866 in total); use the slider to show only the busiest routes.</p>
+      </div>
+    </div>
+
+    <p class="takeaway">Photos pile up in a few central hotspots, and the busiest routes link neighbours such as Ueno and Akihabara, or Harajuku and Shibuya. Some visitors stay in one neighbourhood, while others cover the whole city.</p>
+
     <!-- ============ ACT II ============ -->
-    <p class="act-label">Act II &middot; The camera</p>
-    <h2 class="section-title">What Does a Camera Cost?</h2>
-    <p class="narrative">
-      Behind every photo is a camera, and cameras vary enormously. Some are simple, budget-friendly models. Others are professional bodies built for demanding conditions. The first chart plots every camera by release year and price, with bigger circles for more megapixels. The second compares how prices are spread within each brand. Both use a log scale, so one step up means many times the price.
-    </p>
+    <p class="act-label" id="act2">Act II &middot; The camera</p>
+    <div class="section-head">
+      <h2 class="section-title">What Does a Camera Cost?</h2>
+      <p class="narrative">Behind every photo is a camera, and cameras vary enormously. Some are simple, budget-friendly models. Others are professional bodies built for demanding conditions. The first chart plots every camera by release year and price, with bigger circles for more megapixels. The second compares how prices are spread within each brand. Both use a log scale, so one step up means many times the price.</p>
+    </div>
 
     <div class="chart-row">
       <div class="chart-half">
@@ -107,10 +122,10 @@
       </div>
     </div>
 
-    <h2 class="section-title">How Cameras Changed Over Time</h2>
-    <p class="narrative">
-      Cameras have not stood still. Across the years covered by the dataset, manufacturers released new models, sharper sensors arrived, and prices moved. These three charts follow that story: what the typical camera cost each year, how many new models appeared, and how image resolution grew.
-    </p>
+    <div class="section-head">
+      <h2 class="section-title">How Cameras Changed Over Time</h2>
+      <p class="narrative">Cameras have not stood still. Across the years covered by the dataset, manufacturers released new models, sharper sensors arrived, and prices moved. These three charts follow that story: what the typical camera cost each year, how many new models appeared, and how image resolution grew.</p>
+    </div>
 
     <div class="chart-row">
       <div class="chart-half">
@@ -135,10 +150,10 @@
       </p>
     </div>
 
-    <h2 class="section-title">What Is in the Camera Bag?</h2>
-    <p class="narrative">
-      Finally, the details that shape how a camera feels to use: how far the lens zooms, which memory cards it takes, and how each brand positions itself on price. For a traveller, zoom decides whether you can capture Tokyo Tower from across the park, and storage decides which cards you need to pack.
-    </p>
+    <div class="section-head">
+      <h2 class="section-title">What Is in the Camera Bag?</h2>
+      <p class="narrative">Finally, the details that shape how a camera feels to use: how far the lens zooms, which memory cards it takes, and how each brand positions itself on price. For a traveller, zoom decides whether you can capture Tokyo Tower from across the park, and storage decides which cards you need to pack.</p>
+    </div>
 
     <div class="chart-row">
       <div class="chart-half">
@@ -164,7 +179,7 @@
     </div>
 
     <!-- ============ CONCLUSION ============ -->
-    <section class="conclusion">
+    <section class="conclusion" id="conclusion">
       <h2>Putting It Together</h2>
       <p>
         The photos show that Tokyo is not photographed evenly: visitors gather in a few hotspots and spread out along routes between them. The camera data shows that the tools used to capture those moments range from simple to professional, and have improved in resolution and variety over time.
@@ -175,16 +190,22 @@
     </section>
 
     <!-- Footer: sources, author, date, AI acknowledgement -->
-    <footer class="dashboard-footer">
-      <p><strong>Sources:</strong></p>
-      <ol>
-        <!-- TODO: add the full source name and URL for each dataset below (required by the DV2 brief). -->
-        <li>Tokyo geotagged photo metadata from Flickr (<code>tokyo_clean.csv</code>).</li>
-        <li>Camera specifications dataset (<code>camera_dataset.csv</code>).</li>
-      </ol>
-      <p><strong>Author:</strong> Rachel Chiew Dhian Lin | <strong>Unit:</strong> FIT3179 Data Visualisation 2 | Monash University</p>
-      <p><strong>Date:</strong> October 2026</p>
-      <p><strong>AI acknowledgement:</strong> Generative AI (Claude) was used to improve the narrative text and page layout. All charts and maps were built with Vega-Lite.</p>
+    <footer class="dashboard-footer" id="sources">
+      <div class="footer-grid">
+        <div>
+          <p class="footer-label">Sources</p>
+          <ol>
+            <!-- TODO: add the full source name and URL for each dataset below (required by the DV2 brief). -->
+            <li>Tokyo geotagged photo metadata from Flickr (<code>tokyo_clean.csv</code>).</li>
+            <li>Camera specifications dataset (<code>camera_dataset.csv</code>).</li>
+          </ol>
+        </div>
+        <div>
+          <p class="footer-label">About this page</p>
+          <p><strong>Author:</strong> Rachel Chiew Dhian Lin<br><strong>Unit:</strong> FIT3179 Data Visualisation 2, Monash University<br><strong>Date:</strong> October 2026</p>
+          <p><strong>AI acknowledgement:</strong> Generative AI (Claude) was used to improve the narrative text and page layout. All charts and maps were built with Vega-Lite.</p>
+        </div>
+      </div>
     </footer>
 
   </div>

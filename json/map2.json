@@ -1,303 +1,256 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 520,
-  "height": 480,
-  "projection": {
-    "type": "mercator",
-    "center": [
-      139.74,
-      35.675
-    ],
-    "scale": 80000
-  },
-  "layer": [
-    {
-      "data": {
-        "url": "https://raw.githubusercontent.com/dataofjapan/land/master/japan.topojson",
-        "format": {
-          "type": "topojson",
-          "feature": "japan"
-        }
-      },
-      "mark": {
-        "type": "geoshape",
-        "fill": "#E8ECF1",
-        "stroke": "#C3CBD6",
-        "strokeWidth": 0.5
-      }
-    },
-    {
-      "data": {
-        "url": "data/tokyo_clean.csv"
-      },
-      "transform": [
-        {
-          "calculate": "floor(datum.longitude * 50) / 50",
-          "as": "clon"
-        },
-        {
-          "calculate": "floor(datum.latitude * 50) / 50",
-          "as": "clat"
-        },
-        {
-          "aggregate": [
-            {
-              "op": "count",
-              "as": "n"
-            }
-          ],
-          "groupby": [
-            "clon",
-            "clat"
-          ]
-        },
-        {
-          "window": [
-            {
-              "op": "rank",
-              "as": "rnk"
-            }
-          ],
-          "sort": [
-            {
-              "field": "n",
-              "order": "descending"
-            }
-          ]
-        },
-        {
-          "filter": "datum.rnk <= 10"
-        },
-        {
-          "calculate": "datum.clon + 0.01",
-          "as": "lon"
-        },
-        {
-          "calculate": "datum.clat + 0.01",
-          "as": "lat"
-        }
-      ],
-      "mark": {
-        "type": "circle",
-        "color": "#4e79a7",
-        "opacity": 0.7,
-        "stroke": "#ffffff",
-        "strokeWidth": 1.2
-      },
-      "encoding": {
-        "longitude": {
-          "field": "lon",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "lat",
-          "type": "quantitative"
-        },
-        "size": {
-          "field": "n",
-          "type": "quantitative",
-          "scale": {
-            "type": "linear",
-            "zero": true,
-            "domain": [
-              0,
-              720
-            ],
-            "range": [
-              0,
-              813
-            ]
-          },
-          "legend": {
-            "title": "Photos in area",
-            "orient": "bottom-right",
-            "values": [
-              200,
-              400,
-              700
-            ],
-            "symbolFillColor": "#4e79a7",
-            "symbolOpacity": 0.7
-          }
-        },
-        "tooltip": [
-          {
-            "field": "n",
-            "type": "quantitative",
-            "title": "Photos in this area"
-          }
-        ]
-      }
-    },
-    {
-      "data": {
-        "values": [
-          {
-            "lon": 139.8165,
-            "lat": 35.67,
-            "text": "Ginza–Tsukiji"
-          },
-          {
-            "lon": 139.7452,
-            "lat": 35.71,
-            "text": "Ueno"
-          },
-          {
-            "lon": 139.8384,
-            "lat": 35.69,
-            "text": "Tokyo Station–Akihabara"
-          },
-          {
-            "lon": 139.6775,
-            "lat": 35.67,
-            "text": "Harajuku"
-          },
-          {
-            "lon": 139.7214,
-            "lat": 35.7021,
-            "text": "Imperial Palace"
-          },
-          {
-            "lon": 139.8192,
-            "lat": 35.71,
-            "text": "Asakusa"
-          },
-          {
-            "lon": 139.6785,
-            "lat": 35.69,
-            "text": "Shinjuku"
-          },
-          {
-            "lon": 139.7386,
-            "lat": 35.6552,
-            "text": "Roppongi"
-          },
-          {
-            "lon": 139.6814,
-            "lat": 35.65,
-            "text": "Shibuya"
-          },
-          {
-            "lon": 139.7632,
-            "lat": 35.63,
-            "text": "Shinagawa"
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "fontSize": 11,
-        "fontWeight": 600,
-        "color": "#ffffff",
-        "stroke": "#ffffff",
-        "strokeWidth": 4,
-        "strokeJoin": "round",
-        "opacity": 0.9
-      },
-      "encoding": {
-        "longitude": {
-          "field": "lon",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "lat",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "text",
-          "type": "nominal"
-        }
-      }
-    },
-    {
-      "data": {
-        "values": [
-          {
-            "lon": 139.8165,
-            "lat": 35.67,
-            "text": "Ginza–Tsukiji"
-          },
-          {
-            "lon": 139.7452,
-            "lat": 35.71,
-            "text": "Ueno"
-          },
-          {
-            "lon": 139.8384,
-            "lat": 35.69,
-            "text": "Tokyo Station–Akihabara"
-          },
-          {
-            "lon": 139.6775,
-            "lat": 35.67,
-            "text": "Harajuku"
-          },
-          {
-            "lon": 139.7214,
-            "lat": 35.7021,
-            "text": "Imperial Palace"
-          },
-          {
-            "lon": 139.8192,
-            "lat": 35.71,
-            "text": "Asakusa"
-          },
-          {
-            "lon": 139.6785,
-            "lat": 35.69,
-            "text": "Shinjuku"
-          },
-          {
-            "lon": 139.7386,
-            "lat": 35.6552,
-            "text": "Roppongi"
-          },
-          {
-            "lon": 139.6814,
-            "lat": 35.65,
-            "text": "Shibuya"
-          },
-          {
-            "lon": 139.7632,
-            "lat": 35.63,
-            "text": "Shinagawa"
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "fontSize": 11,
-        "fontWeight": 600,
-        "color": "#1b2430"
-      },
-      "encoding": {
-        "longitude": {
-          "field": "lon",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "lat",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "text",
-          "type": "nominal"
-        }
-      }
+ "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+ "width": 420,
+ "height": 400,
+ "data": {
+  "values": [
+   {
+    "cid": "6988_1783",
+    "rank": 1,
+    "name": "Ginza–Tsukiji",
+    "label": "1 · Ginza–Tsukiji",
+    "photos": 709,
+    "share": 0.0709,
+    "lon": 139.77,
+    "lat": 35.67,
+    "x0": 139.76,
+    "x1": 139.78,
+    "y0": 35.66,
+    "y1": 35.68
+   },
+   {
+    "cid": "6988_1785",
+    "rank": 2,
+    "name": "Ueno",
+    "label": "2 · Ueno",
+    "photos": 665,
+    "share": 0.0665,
+    "lon": 139.77,
+    "lat": 35.71,
+    "x0": 139.76,
+    "x1": 139.78,
+    "y0": 35.7,
+    "y1": 35.72
+   },
+   {
+    "cid": "6988_1784",
+    "rank": 3,
+    "name": "Tokyo Station–Akihabara",
+    "label": "3 · Tokyo Station–Akihabara",
+    "photos": 514,
+    "share": 0.0514,
+    "lon": 139.77,
+    "lat": 35.69,
+    "x0": 139.76,
+    "x1": 139.78,
+    "y0": 35.68,
+    "y1": 35.7
+   },
+   {
+    "cid": "6985_1783",
+    "rank": 4,
+    "name": "Harajuku",
+    "label": "4 · Harajuku",
+    "photos": 472,
+    "share": 0.0472,
+    "lon": 139.71,
+    "lat": 35.67,
+    "x0": 139.7,
+    "x1": 139.72,
+    "y0": 35.66,
+    "y1": 35.68
+   },
+   {
+    "cid": "6987_1784",
+    "rank": 5,
+    "name": "Imperial Palace",
+    "label": "5 · Imperial Palace",
+    "photos": 450,
+    "share": 0.045,
+    "lon": 139.75,
+    "lat": 35.69,
+    "x0": 139.74,
+    "x1": 139.76,
+    "y0": 35.68,
+    "y1": 35.7
+   },
+   {
+    "cid": "6989_1785",
+    "rank": 6,
+    "name": "Asakusa",
+    "label": "6 · Asakusa",
+    "photos": 379,
+    "share": 0.0379,
+    "lon": 139.79,
+    "lat": 35.71,
+    "x0": 139.78,
+    "x1": 139.8,
+    "y0": 35.7,
+    "y1": 35.72
+   },
+   {
+    "cid": "6985_1784",
+    "rank": 7,
+    "name": "Shinjuku",
+    "label": "7 · Shinjuku",
+    "photos": 375,
+    "share": 0.0375,
+    "lon": 139.71,
+    "lat": 35.69,
+    "x0": 139.7,
+    "x1": 139.72,
+    "y0": 35.68,
+    "y1": 35.7
+   },
+   {
+    "cid": "6986_1783",
+    "rank": 8,
+    "name": "Roppongi",
+    "label": "8 · Roppongi",
+    "photos": 368,
+    "share": 0.0368,
+    "lon": 139.73,
+    "lat": 35.67,
+    "x0": 139.72,
+    "x1": 139.74,
+    "y0": 35.66,
+    "y1": 35.68
+   },
+   {
+    "cid": "6985_1782",
+    "rank": 9,
+    "name": "Shibuya",
+    "label": "9 · Shibuya",
+    "photos": 329,
+    "share": 0.0329,
+    "lon": 139.71,
+    "lat": 35.65,
+    "x0": 139.7,
+    "x1": 139.72,
+    "y0": 35.64,
+    "y1": 35.66
+   },
+   {
+    "cid": "6986_1781",
+    "rank": 10,
+    "name": "Shinagawa",
+    "label": "10 · Shinagawa",
+    "photos": 315,
+    "share": 0.0315,
+    "lon": 139.73,
+    "lat": 35.63,
+    "x0": 139.72,
+    "x1": 139.74,
+    "y0": 35.62,
+    "y1": 35.64
+   }
+  ]
+ },
+ "layer": [
+  {
+   "mark": {
+    "type": "bar",
+    "color": "#d9532b",
+    "cornerRadiusEnd": 2,
+    "height": {
+     "band": 0.72
     }
-  ],
-  "config": {
-    "view": {
-      "stroke": null
+   },
+   "encoding": {
+    "y": {
+     "field": "label",
+     "type": "nominal",
+     "sort": {
+      "field": "rank",
+      "order": "ascending"
+     },
+     "title": null,
+     "axis": {
+      "labelFontSize": 12,
+      "labelLimit": 200,
+      "domain": false,
+      "ticks": false,
+      "labelColor": "#1b2430"
+     }
     },
-    "font": "Open Sans",
-    "legend": {
+    "x": {
+     "field": "photos",
+     "type": "quantitative",
+     "title": "Photos in the area",
+     "scale": {
+      "domain": [
+       0,
+       900
+      ]
+     },
+     "axis": {
+      "grid": true,
+      "gridColor": "#edf0f5",
+      "tickCount": 4,
       "labelFontSize": 11,
       "titleFontSize": 11,
-      "titleFontWeight": 600,
-      "fillColor": "rgba(255,255,255,0.88)",
-      "padding": 6,
-      "cornerRadius": 3
+      "domain": false
+     }
+    },
+    "tooltip": [
+     {
+      "field": "name",
+      "type": "nominal",
+      "title": "Area"
+     },
+     {
+      "field": "photos",
+      "type": "quantitative",
+      "title": "Photos"
+     },
+     {
+      "field": "share",
+      "type": "quantitative",
+      "title": "Share of all photos",
+      "format": ".1%"
+     }
+    ]
+   }
+  },
+  {
+   "mark": {
+    "type": "text",
+    "align": "left",
+    "dx": 5,
+    "fontSize": 11,
+    "fontWeight": 600,
+    "color": "#1b2430"
+   },
+   "transform": [
+    {
+     "calculate": "datum.photos + '  (' + format(datum.share, '.1%') + ')'",
+     "as": "t"
     }
+   ],
+   "encoding": {
+    "y": {
+     "field": "label",
+     "type": "nominal",
+     "sort": {
+      "field": "rank",
+      "order": "ascending"
+     }
+    },
+    "x": {
+     "field": "photos",
+     "type": "quantitative"
+    },
+    "text": {
+     "field": "t",
+     "type": "nominal"
+    }
+   }
   }
+ ],
+ "config": {
+  "view": {
+   "stroke": null
+  },
+  "font": "Open Sans"
+ }
 }

@@ -1,13 +1,17 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 480,
+  "width": 400,
   "height": {
-    "step": 22
+    "step": 28
   },
   "data": {
     "url": "data/camera_dataset.csv"
   },
   "transform": [
+    {
+      "calculate": "toNumber(datum.Price)",
+      "as": "Price"
+    },
     {
       "calculate": "split(datum.Model, ' ')[0]",
       "as": "Brand"
@@ -35,23 +39,24 @@
   "mark": {
     "type": "boxplot",
     "extent": 1.5,
-    "size": 14,
-    "color": "#4e79a7",
-    "opacity": 0.65,
+    "size": 16,
+    "color": "#7fa6cc",
     "median": {
       "color": "#1b2430",
-      "thickness": 2
+      "thickness": 2.5
     },
     "rule": {
-      "color": "#5b6776"
+      "color": "#7b8794"
     },
     "ticks": {
-      "color": "#5b6776"
+      "color": "#7b8794",
+      "size": 8
     },
     "outliers": {
-      "size": 18,
-      "color": "#4e79a7",
-      "opacity": 0.5
+      "size": 14,
+      "color": "#7b8794",
+      "opacity": 0.45,
+      "filled": true
     }
   },
   "encoding": {
@@ -59,14 +64,25 @@
       "field": "Brand",
       "type": "nominal",
       "title": null,
-      "sort": {
-        "field": "Price",
-        "op": "median",
-        "order": "descending"
-      },
+      "sort": [
+        "Sony",
+        "Olympus",
+        "Pentax",
+        "Epson",
+        "Kyocera",
+        "Nikon",
+        "Samsung",
+        "Canon",
+        "Fujifilm",
+        "Ricoh",
+        "Toshiba"
+      ],
       "axis": {
         "labelFontSize": 12,
-        "grid": false
+        "labelColor": "#1b2430",
+        "domain": false,
+        "ticks": false,
+        "labelPadding": 8
       }
     },
     "x": {
@@ -76,14 +92,12 @@
       "scale": {
         "type": "log",
         "domain": [
-          10,
+          50,
           10000
         ]
       },
       "axis": {
         "values": [
-          10,
-          30,
           100,
           300,
           1000,
@@ -104,17 +118,18 @@
       "labelFontSize": 11,
       "titleFontSize": 12,
       "titleFontWeight": 600,
-      "gridColor": "#e4e9f0",
+      "titleColor": "#1b2430",
+      "labelColor": "#5b6776",
+      "gridColor": "#edf0f5",
       "domainColor": "#9aa5b1",
-      "tickColor": "#9aa5b1"
+      "tickColor": "#9aa5b1",
+      "titlePadding": 10
     },
     "legend": {
       "labelFontSize": 11,
       "titleFontSize": 11,
       "titleFontWeight": 600,
-      "fillColor": "rgba(255,255,255,0.88)",
-      "padding": 6,
-      "cornerRadius": 3
+      "labelColor": "#5b6776"
     }
   }
 }

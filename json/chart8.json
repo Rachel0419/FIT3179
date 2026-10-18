@@ -1,29 +1,144 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 380,
-  "height": 380,
+  "width": 400,
+  "height": 300,
   "data": {
     "url": "data/camera_dataset.csv"
   },
+  "transform": [
+    {
+      "calculate": "toNumber(datum['Release date'])",
+      "as": "year"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "count",
+          "as": "models"
+        }
+      ],
+      "groupby": [
+        "year"
+      ]
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "ordinal",
+      "title": "Release year",
+      "axis": {
+        "labelAngle": 0,
+        "labelExpr": "datum.value % 2 == 0 ? datum.value : ''",
+        "ticks": false
+      }
+    },
+    "y": {
+      "field": "models",
+      "type": "quantitative",
+      "title": "New models released",
+      "scale": {
+        "domain": [
+          0,
+          185
+        ]
+      },
+      "axis": {
+        "grid": true,
+        "tickCount": 4,
+        "domain": false
+      }
+    }
+  },
   "layer": [
     {
-      "mark": {"type": "rule", "strokeWidth": 2, "color": "#757575"},
+      "mark": {
+        "type": "rule",
+        "strokeWidth": 2
+      },
       "encoding": {
-        "x": {"field": "Release date", "type": "quantitative", "scale": {"zero": false}},
-        "y": {"aggregate": "count", "type": "quantitative", "title": "Models Released"},
-        "y2": {"ymin": 0}
+        "y2": {
+          "datum": 0
+        },
+        "color": {
+          "condition": {
+            "test": "datum.year == 1998 || datum.year == 2002 || datum.year == 2007",
+            "value": "#7fa6cc"
+          },
+          "value": "#d5dbe3"
+        }
       }
     },
     {
-      "mark": {"type": "circle", "size": 100, "filled": true, "color": "#1f77b4"},
+      "mark": {
+        "type": "circle",
+        "size": 90,
+        "opacity": 1
+      },
       "encoding": {
-        "x": {"field": "Release date", "type": "quantitative"},
-        "y": {"aggregate": "count", "type": "quantitative"},
         "tooltip": [
-          {"field": "Release date", "type": "quantitative", "title": "Year"},
-          {"aggregate": "count", "type": "quantitative", "title": "Models Released"}
-        ]
+          {
+            "field": "year",
+            "type": "ordinal",
+            "title": "Year"
+          },
+          {
+            "field": "models",
+            "type": "quantitative",
+            "title": "New models"
+          }
+        ],
+        "color": {
+          "condition": {
+            "test": "datum.year == 1998 || datum.year == 2002 || datum.year == 2007",
+            "value": "#2f5d8a"
+          },
+          "value": "#b8c2d0"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.year == 1998 || datum.year == 2002 || datum.year == 2007"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dy": -12,
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#2f5d8a"
+      },
+      "encoding": {
+        "text": {
+          "field": "models",
+          "type": "quantitative"
+        }
       }
     }
-  ]
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Open Sans",
+    "axis": {
+      "labelFontSize": 11,
+      "titleFontSize": 12,
+      "titleFontWeight": 600,
+      "titleColor": "#1b2430",
+      "labelColor": "#5b6776",
+      "gridColor": "#edf0f5",
+      "domainColor": "#9aa5b1",
+      "tickColor": "#9aa5b1",
+      "titlePadding": 10
+    },
+    "legend": {
+      "labelFontSize": 11,
+      "titleFontSize": 11,
+      "titleFontWeight": 600,
+      "labelColor": "#5b6776"
+    }
+  }
 }

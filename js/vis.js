@@ -2,11 +2,11 @@
 const OPTS = { actions: false };
 const draw = (target, spec) => vegaEmbed(target, spec, OPTS).catch(console.error);
 
-// PART 1: GEOSPATIAL MAPS
-draw("#map_region", "json/map1.json");
-draw("#map_flow", "json/map12.json");
-draw("#map_bubble", "json/map2.json");
-draw("#map_grid", "json/map3.json");
+// PART 1: GEOSPATIAL MAPS (dot, bin, proportional symbol, flow)
+draw("#map_dot", "json/map1.json");
+draw("#map_bin", "json/map2.json");
+draw("#map_symbol", "json/map3.json");
+draw("#map_flow", "json/map4.json");
 
 // PART 2: ADVANCED VISUAL ANALYTICS
 draw("#chart4", "json/chart4.json");

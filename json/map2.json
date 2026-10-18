@@ -1,256 +1,139 @@
 {
- "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
- "width": 420,
- "height": 400,
- "data": {
-  "values": [
-   {
-    "cid": "6988_1783",
-    "rank": 1,
-    "name": "Ginza–Tsukiji",
-    "label": "1 · Ginza–Tsukiji",
-    "photos": 709,
-    "share": 0.0709,
-    "lon": 139.77,
-    "lat": 35.67,
-    "x0": 139.76,
-    "x1": 139.78,
-    "y0": 35.66,
-    "y1": 35.68
-   },
-   {
-    "cid": "6988_1785",
-    "rank": 2,
-    "name": "Ueno",
-    "label": "2 · Ueno",
-    "photos": 665,
-    "share": 0.0665,
-    "lon": 139.77,
-    "lat": 35.71,
-    "x0": 139.76,
-    "x1": 139.78,
-    "y0": 35.7,
-    "y1": 35.72
-   },
-   {
-    "cid": "6988_1784",
-    "rank": 3,
-    "name": "Tokyo Station–Akihabara",
-    "label": "3 · Tokyo Station–Akihabara",
-    "photos": 514,
-    "share": 0.0514,
-    "lon": 139.77,
-    "lat": 35.69,
-    "x0": 139.76,
-    "x1": 139.78,
-    "y0": 35.68,
-    "y1": 35.7
-   },
-   {
-    "cid": "6985_1783",
-    "rank": 4,
-    "name": "Harajuku",
-    "label": "4 · Harajuku",
-    "photos": 472,
-    "share": 0.0472,
-    "lon": 139.71,
-    "lat": 35.67,
-    "x0": 139.7,
-    "x1": 139.72,
-    "y0": 35.66,
-    "y1": 35.68
-   },
-   {
-    "cid": "6987_1784",
-    "rank": 5,
-    "name": "Imperial Palace",
-    "label": "5 · Imperial Palace",
-    "photos": 450,
-    "share": 0.045,
-    "lon": 139.75,
-    "lat": 35.69,
-    "x0": 139.74,
-    "x1": 139.76,
-    "y0": 35.68,
-    "y1": 35.7
-   },
-   {
-    "cid": "6989_1785",
-    "rank": 6,
-    "name": "Asakusa",
-    "label": "6 · Asakusa",
-    "photos": 379,
-    "share": 0.0379,
-    "lon": 139.79,
-    "lat": 35.71,
-    "x0": 139.78,
-    "x1": 139.8,
-    "y0": 35.7,
-    "y1": 35.72
-   },
-   {
-    "cid": "6985_1784",
-    "rank": 7,
-    "name": "Shinjuku",
-    "label": "7 · Shinjuku",
-    "photos": 375,
-    "share": 0.0375,
-    "lon": 139.71,
-    "lat": 35.69,
-    "x0": 139.7,
-    "x1": 139.72,
-    "y0": 35.68,
-    "y1": 35.7
-   },
-   {
-    "cid": "6986_1783",
-    "rank": 8,
-    "name": "Roppongi",
-    "label": "8 · Roppongi",
-    "photos": 368,
-    "share": 0.0368,
-    "lon": 139.73,
-    "lat": 35.67,
-    "x0": 139.72,
-    "x1": 139.74,
-    "y0": 35.66,
-    "y1": 35.68
-   },
-   {
-    "cid": "6985_1782",
-    "rank": 9,
-    "name": "Shibuya",
-    "label": "9 · Shibuya",
-    "photos": 329,
-    "share": 0.0329,
-    "lon": 139.71,
-    "lat": 35.65,
-    "x0": 139.7,
-    "x1": 139.72,
-    "y0": 35.64,
-    "y1": 35.66
-   },
-   {
-    "cid": "6986_1781",
-    "rank": 10,
-    "name": "Shinagawa",
-    "label": "10 · Shinagawa",
-    "photos": 315,
-    "share": 0.0315,
-    "lon": 139.73,
-    "lat": 35.63,
-    "x0": 139.72,
-    "x1": 139.74,
-    "y0": 35.62,
-    "y1": 35.64
-   }
-  ]
- },
- "layer": [
-  {
-   "mark": {
-    "type": "bar",
-    "color": "#d9532b",
-    "cornerRadiusEnd": 2,
-    "height": {
-     "band": 0.72
-    }
-   },
-   "encoding": {
-    "y": {
-     "field": "label",
-     "type": "nominal",
-     "sort": {
-      "field": "rank",
-      "order": "ascending"
-     },
-     "title": null,
-     "axis": {
-      "labelFontSize": 12,
-      "labelLimit": 200,
-      "domain": false,
-      "ticks": false,
-      "labelColor": "#1b2430"
-     }
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 460,
+  "height": 440,
+  "projection": {
+    "type": "mercator",
+    "center": [
+      139.74,
+      35.67
+    ],
+    "scale": 65000
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/dataofjapan/land/master/japan.topojson",
+        "format": {
+          "type": "topojson",
+          "feature": "japan"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#F7F5F0",
+        "stroke": "#CFC9BC",
+        "strokeWidth": 0.6
+      }
     },
-    "x": {
-     "field": "photos",
-     "type": "quantitative",
-     "title": "Photos in the area",
-     "scale": {
-      "domain": [
-       0,
-       900
-      ]
-     },
-     "axis": {
-      "grid": true,
-      "gridColor": "#edf0f5",
-      "tickCount": 4,
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "transform": [
+        {
+          "calculate": "floor(datum.longitude*100)/100",
+          "as": "clon"
+        },
+        {
+          "calculate": "floor(datum.latitude*100)/100",
+          "as": "clat"
+        },
+        {
+          "aggregate": [
+            {
+              "op": "count",
+              "as": "n"
+            }
+          ],
+          "groupby": [
+            "clon",
+            "clat"
+          ]
+        },
+        {
+          "filter": "datum.n >= 3"
+        },
+        {
+          "calculate": "datum.clon + 0.01",
+          "as": "clon2"
+        },
+        {
+          "calculate": "datum.clat + 0.01",
+          "as": "clat2"
+        }
+      ],
+      "mark": {
+        "type": "rect",
+        "opacity": 0.95,
+        "stroke": "#ffffff",
+        "strokeWidth": 0.5
+      },
+      "encoding": {
+        "longitude": {
+          "field": "clon",
+          "type": "quantitative"
+        },
+        "longitude2": {
+          "field": "clon2"
+        },
+        "latitude": {
+          "field": "clat",
+          "type": "quantitative"
+        },
+        "latitude2": {
+          "field": "clat2"
+        },
+        "color": {
+          "field": "n",
+          "type": "quantitative",
+          "scale": {
+            "type": "sqrt",
+            "scheme": {
+              "name": "orangered",
+              "extent": [
+                0.15,
+                1
+              ]
+            }
+          },
+          "legend": {
+            "title": "Photos per 1 km square",
+            "orient": "bottom-right",
+            "gradientLength": 110,
+            "format": "d",
+            "values": [
+              3,
+              50,
+              150,
+              300
+            ]
+          }
+        },
+        "tooltip": [
+          {
+            "field": "n",
+            "type": "quantitative",
+            "title": "Photos in this square"
+          }
+        ]
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null,
+      "fill": "#E6EEF5"
+    },
+    "font": "Open Sans",
+    "legend": {
       "labelFontSize": 11,
       "titleFontSize": 11,
-      "domain": false
-     }
-    },
-    "tooltip": [
-     {
-      "field": "name",
-      "type": "nominal",
-      "title": "Area"
-     },
-     {
-      "field": "photos",
-      "type": "quantitative",
-      "title": "Photos"
-     },
-     {
-      "field": "share",
-      "type": "quantitative",
-      "title": "Share of all photos",
-      "format": ".1%"
-     }
-    ]
-   }
-  },
-  {
-   "mark": {
-    "type": "text",
-    "align": "left",
-    "dx": 5,
-    "fontSize": 11,
-    "fontWeight": 600,
-    "color": "#1b2430"
-   },
-   "transform": [
-    {
-     "calculate": "datum.photos + '  (' + format(datum.share, '.1%') + ')'",
-     "as": "t"
+      "titleFontWeight": 600,
+      "fillColor": "rgba(255,255,255,0.9)",
+      "padding": 6,
+      "cornerRadius": 3,
+      "strokeColor": "#d8dde5"
     }
-   ],
-   "encoding": {
-    "y": {
-     "field": "label",
-     "type": "nominal",
-     "sort": {
-      "field": "rank",
-      "order": "ascending"
-     }
-    },
-    "x": {
-     "field": "photos",
-     "type": "quantitative"
-    },
-    "text": {
-     "field": "t",
-     "type": "nominal"
-    }
-   }
   }
- ],
- "config": {
-  "view": {
-   "stroke": null
-  },
-  "font": "Open Sans"
- }
 }

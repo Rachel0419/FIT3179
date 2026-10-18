@@ -1,35 +1,191 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 380,
-  "height": 380,
+  "height": {
+    "step": 24
+  },
   "data": {
     "url": "data/camera_dataset.csv"
   },
   "transform": [
-    {"calculate": "split(datum.Model, ' ')[0]", "as": "Brand"}
-  ],
-  "mark": {
-    "type": "point",
-    "filled": true,
-    "size": 100,
-    "color": "#e377c2"
-  },
-  "encoding": {
-    "x": {
-      "aggregate": "mean",
-      "field": "Price",
-      "type": "quantitative",
-      "title": "Average Price ($ USD)"
+    {
+      "calculate": "toNumber(datum.Price)",
+      "as": "Price"
     },
+    {
+      "calculate": "split(datum.Model, ' ')[0]",
+      "as": "Brand"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "count",
+          "as": "models"
+        },
+        {
+          "op": "distinct",
+          "field": "Price",
+          "as": "levels"
+        }
+      ],
+      "groupby": [
+        "Brand"
+      ]
+    },
+    {
+      "filter": "datum.models >= 15 && datum.levels >= 2"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "min",
+          "field": "Price",
+          "as": "lowest"
+        },
+        {
+          "op": "max",
+          "field": "Price",
+          "as": "highest"
+        },
+        {
+          "op": "mean",
+          "field": "Price",
+          "as": "average"
+        },
+        {
+          "op": "count",
+          "as": "models"
+        }
+      ],
+      "groupby": [
+        "Brand"
+      ]
+    }
+  ],
+  "encoding": {
     "y": {
       "field": "Brand",
       "type": "nominal",
-      "sort": "-x",
-      "title": "Camera Brand"
+      "sort": {
+        "field": "average",
+        "order": "descending"
+      },
+      "title": null,
+      "axis": {
+        "domain": false,
+        "ticks": false,
+        "labelFontSize": 11
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#b8c2d0",
+        "strokeWidth": 3,
+        "strokeCap": "round"
+      },
+      "encoding": {
+        "x": {
+          "field": "lowest",
+          "type": "quantitative",
+          "scale": {
+            "type": "log",
+            "domain": [
+              50,
+              10000
+            ]
+          },
+          "title": "Price in US$ (log scale)",
+          "axis": {
+            "grid": true,
+            "gridColor": "#edf0f5",
+            "format": "~s",
+            "values": [
+              100,
+              300,
+              1000,
+              3000,
+              10000
+            ]
+          }
+        },
+        "x2": {
+          "field": "highest"
+        }
+      }
     },
-    "tooltip": [
-      {"field": "Brand", "type": "nominal", "title": "Brand"},
-      {"aggregate": "mean", "field": "Price", "type": "quantitative", "title": "Average Price ($)", "format": ".2f"}
-    ]
+    {
+      "mark": {
+        "type": "circle",
+        "size": 70,
+        "color": "#9aa8bb"
+      },
+      "encoding": {
+        "x": {
+          "field": "lowest",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {
+            "field": "Brand",
+            "type": "nominal"
+          },
+          {
+            "field": "lowest",
+            "type": "quantitative",
+            "title": "Cheapest ($)"
+          },
+          {
+            "field": "highest",
+            "type": "quantitative",
+            "title": "Most expensive ($)"
+          },
+          {
+            "field": "average",
+            "type": "quantitative",
+            "title": "Average ($)",
+            "format": ",.0f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 70,
+        "color": "#1b2430"
+      },
+      "encoding": {
+        "x": {
+          "field": "highest",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "shape": "diamond",
+        "filled": true,
+        "size": 120,
+        "color": "#d9532b",
+        "stroke": "#ffffff",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "average",
+          "type": "quantitative"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Open Sans"
   }
 }

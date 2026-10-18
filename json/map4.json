@@ -1,0 +1,665 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 460,
+  "height": 440,
+  "projection": {
+    "type": "mercator",
+    "center": [
+      139.745,
+      35.67
+    ],
+    "scale": 146000
+  },
+  "params": [
+    {
+      "name": "minTrips",
+      "value": 16,
+      "bind": {
+        "input": "range",
+        "min": 10,
+        "max": 24,
+        "step": 2,
+        "name": "Show moves made at least (times): "
+      }
+    }
+  ],
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/dataofjapan/land/master/japan.topojson",
+        "format": {
+          "type": "topojson",
+          "feature": "japan"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#F7F5F0",
+        "stroke": "#CFC9BC",
+        "strokeWidth": 0.6
+      }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/dataofjapan/land/master/tokyo.topojson",
+        "format": {
+          "type": "topojson",
+          "feature": "tokyo"
+        }
+      },
+      "transform": [
+        {
+          "calculate": "replace(replace(datum.properties.ward_en, ' Ku', ' City'), ' Shi', ' City')",
+          "as": "ward"
+        }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "filled": false,
+        "stroke": "#8a94a3",
+        "strokeWidth": 0.7,
+        "strokeOpacity": 0.75
+      },
+      "encoding": {
+        "tooltip": [
+          {
+            "field": "ward",
+            "type": "nominal",
+            "title": "Municipality"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "transform": [
+        {
+          "calculate": "toNumber(split(datum['photo/video_page_url'], '/')[5])",
+          "as": "pid"
+        },
+        {
+          "calculate": "floor(datum.longitude*50)+'_'+floor(datum.latitude*50)",
+          "as": "cid"
+        },
+        {
+          "window": [
+            {
+              "op": "lag",
+              "field": "cid",
+              "as": "pcid"
+            }
+          ],
+          "groupby": [
+            "user_id"
+          ],
+          "sort": [
+            {
+              "field": "pid",
+              "order": "ascending"
+            }
+          ]
+        },
+        {
+          "filter": "datum.pcid != null && datum.cid != datum.pcid"
+        },
+        {
+          "lookup": "pcid",
+          "from": {
+            "data": {
+              "url": "data/hotspots.csv",
+              "format": {
+                "type": "csv",
+                "parse": {
+                  "rank": "number",
+                  "lon": "number",
+                  "lat": "number",
+                  "photos": "number",
+                  "share": "number"
+                }
+              }
+            },
+            "key": "cid",
+            "fields": [
+              "rank"
+            ]
+          },
+          "as": [
+            "arank"
+          ]
+        },
+        {
+          "lookup": "cid",
+          "from": {
+            "data": {
+              "url": "data/hotspots.csv",
+              "format": {
+                "type": "csv",
+                "parse": {
+                  "rank": "number",
+                  "lon": "number",
+                  "lat": "number",
+                  "photos": "number",
+                  "share": "number"
+                }
+              }
+            },
+            "key": "cid",
+            "fields": [
+              "rank"
+            ]
+          },
+          "as": [
+            "brank"
+          ]
+        },
+        {
+          "filter": "isValid(datum.arank) && isValid(datum.brank)"
+        },
+        {
+          "aggregate": [
+            {
+              "op": "count",
+              "as": "trips"
+            }
+          ],
+          "groupby": [
+            "arank",
+            "brank"
+          ]
+        },
+        {
+          "filter": "datum.trips >= minTrips"
+        },
+        {
+          "lookup": "arank",
+          "from": {
+            "data": {
+              "url": "data/hotspots.csv",
+              "format": {
+                "type": "csv",
+                "parse": {
+                  "rank": "number",
+                  "lon": "number",
+                  "lat": "number",
+                  "photos": "number",
+                  "share": "number"
+                }
+              }
+            },
+            "key": "rank",
+            "fields": [
+              "lon",
+              "lat",
+              "name"
+            ]
+          },
+          "as": [
+            "alon",
+            "alat",
+            "aname"
+          ]
+        },
+        {
+          "lookup": "brank",
+          "from": {
+            "data": {
+              "url": "data/hotspots.csv",
+              "format": {
+                "type": "csv",
+                "parse": {
+                  "rank": "number",
+                  "lon": "number",
+                  "lat": "number",
+                  "photos": "number",
+                  "share": "number"
+                }
+              }
+            },
+            "key": "rank",
+            "fields": [
+              "lon",
+              "lat",
+              "name"
+            ]
+          },
+          "as": [
+            "blon",
+            "blat",
+            "bname"
+          ]
+        },
+        {
+          "calculate": "datum.aname + ' → ' + datum.bname",
+          "as": "route"
+        },
+        {
+          "calculate": "datum.blon - datum.alon",
+          "as": "dx"
+        },
+        {
+          "calculate": "(datum.blat - datum.alat) * 1.23",
+          "as": "dy"
+        },
+        {
+          "calculate": "(datum.alon + datum.blon) / 2 + 0.22 * datum.dy",
+          "as": "cx"
+        },
+        {
+          "calculate": "(datum.alat + datum.blat) / 2 - 0.22 * datum.dx / 1.23",
+          "as": "cy"
+        },
+        {
+          "calculate": "sequence(0, 1.001, 0.1)",
+          "as": "t"
+        },
+        {
+          "flatten": [
+            "t"
+          ]
+        },
+        {
+          "calculate": "(1-datum.t)*(1-datum.t)*datum.alon + 2*(1-datum.t)*datum.t*datum.cx + datum.t*datum.t*datum.blon",
+          "as": "plon"
+        },
+        {
+          "calculate": "(1-datum.t)*(1-datum.t)*datum.alat + 2*(1-datum.t)*datum.t*datum.cy + datum.t*datum.t*datum.blat",
+          "as": "plat"
+        }
+      ],
+      "mark": {
+        "type": "line",
+        "color": "#2f5d8a",
+        "opacity": 0.62,
+        "strokeCap": "round"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "plon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "plat",
+          "type": "quantitative"
+        },
+        "order": {
+          "field": "t",
+          "type": "quantitative"
+        },
+        "detail": {
+          "field": "route",
+          "type": "nominal"
+        },
+        "strokeWidth": {
+          "field": "trips",
+          "type": "quantitative",
+          "scale": {
+            "type": "sqrt",
+            "domain": [
+              10,
+              30
+            ],
+            "range": [
+              1.5,
+              7
+            ],
+            "clamp": true
+          },
+          "legend": {
+            "title": "Times move made",
+            "orient": "bottom-right",
+            "values": [
+              10,
+              20,
+              30
+            ]
+          }
+        },
+        "tooltip": [
+          {
+            "field": "route",
+            "type": "nominal",
+            "title": "Move"
+          },
+          {
+            "field": "trips",
+            "type": "quantitative",
+            "title": "Times made"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/tokyo_clean.csv"
+      },
+      "transform": [
+        {
+          "calculate": "toNumber(split(datum['photo/video_page_url'], '/')[5])",
+          "as": "pid"
+        },
+        {
+          "calculate": "floor(datum.longitude*50)+'_'+floor(datum.latitude*50)",
+          "as": "cid"
+        },
+        {
+          "window": [
+            {
+              "op": "lag",
+              "field": "cid",
+              "as": "pcid"
+            }
+          ],
+          "groupby": [
+            "user_id"
+          ],
+          "sort": [
+            {
+              "field": "pid",
+              "order": "ascending"
+            }
+          ]
+        },
+        {
+          "filter": "datum.pcid != null && datum.cid != datum.pcid"
+        },
+        {
+          "lookup": "pcid",
+          "from": {
+            "data": {
+              "url": "data/hotspots.csv",
+              "format": {
+                "type": "csv",
+                "parse": {
+                  "rank": "number",
+                  "lon": "number",
+                  "lat": "number",
+                  "photos": "number",
+                  "share": "number"
+                }
+              }
+            },
+            "key": "cid",
+            "fields": [
+              "rank"
+            ]
+          },
+          "as": [
+            "arank"
+          ]
+        },
+        {
+          "lookup": "cid",
+          "from": {
+            "data": {
+              "url": "data/hotspots.csv",
+              "format": {
+                "type": "csv",
+                "parse": {
+                  "rank": "number",
+                  "lon": "number",
+                  "lat": "number",
+                  "photos": "number",
+                  "share": "number"
+                }
+              }
+            },
+            "key": "cid",
+            "fields": [
+              "rank"
+            ]
+          },
+          "as": [
+            "brank"
+          ]
+        },
+        {
+          "filter": "isValid(datum.arank) && isValid(datum.brank)"
+        },
+        {
+          "aggregate": [
+            {
+              "op": "count",
+              "as": "trips"
+            }
+          ],
+          "groupby": [
+            "arank",
+            "brank"
+          ]
+        },
+        {
+          "filter": "datum.trips >= minTrips"
+        },
+        {
+          "lookup": "arank",
+          "from": {
+            "data": {
+              "url": "data/hotspots.csv",
+              "format": {
+                "type": "csv",
+                "parse": {
+                  "rank": "number",
+                  "lon": "number",
+                  "lat": "number",
+                  "photos": "number",
+                  "share": "number"
+                }
+              }
+            },
+            "key": "rank",
+            "fields": [
+              "lon",
+              "lat",
+              "name"
+            ]
+          },
+          "as": [
+            "alon",
+            "alat",
+            "aname"
+          ]
+        },
+        {
+          "lookup": "brank",
+          "from": {
+            "data": {
+              "url": "data/hotspots.csv",
+              "format": {
+                "type": "csv",
+                "parse": {
+                  "rank": "number",
+                  "lon": "number",
+                  "lat": "number",
+                  "photos": "number",
+                  "share": "number"
+                }
+              }
+            },
+            "key": "rank",
+            "fields": [
+              "lon",
+              "lat",
+              "name"
+            ]
+          },
+          "as": [
+            "blon",
+            "blat",
+            "bname"
+          ]
+        },
+        {
+          "calculate": "datum.aname + ' → ' + datum.bname",
+          "as": "route"
+        },
+        {
+          "calculate": "datum.blon - datum.alon",
+          "as": "dx"
+        },
+        {
+          "calculate": "(datum.blat - datum.alat) * 1.23",
+          "as": "dy"
+        },
+        {
+          "calculate": "(datum.alon + datum.blon) / 2 + 0.22 * datum.dy",
+          "as": "cx"
+        },
+        {
+          "calculate": "(datum.alat + datum.blat) / 2 - 0.22 * datum.dx / 1.23",
+          "as": "cy"
+        },
+        {
+          "calculate": "0.62",
+          "as": "t"
+        },
+        {
+          "calculate": "(1-datum.t)*(1-datum.t)*datum.alon + 2*(1-datum.t)*datum.t*datum.cx + datum.t*datum.t*datum.blon",
+          "as": "plon"
+        },
+        {
+          "calculate": "(1-datum.t)*(1-datum.t)*datum.alat + 2*(1-datum.t)*datum.t*datum.cy + datum.t*datum.t*datum.blat",
+          "as": "plat"
+        },
+        {
+          "calculate": "2*(1-datum.t)*(datum.cx-datum.alon) + 2*datum.t*(datum.blon-datum.cx)",
+          "as": "tx"
+        },
+        {
+          "calculate": "(2*(1-datum.t)*(datum.cy-datum.alat) + 2*datum.t*(datum.blat-datum.cy)) * 1.23",
+          "as": "ty"
+        },
+        {
+          "calculate": "atan2(datum.tx, datum.ty) * 180 / PI",
+          "as": "ang"
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "shape": "triangle-up",
+        "filled": true,
+        "color": "#2f5d8a",
+        "opacity": 0.95,
+        "size": 70
+      },
+      "encoding": {
+        "longitude": {
+          "field": "plon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "plat",
+          "type": "quantitative"
+        },
+        "angle": {
+          "field": "ang",
+          "type": "quantitative",
+          "scale": null
+        },
+        "tooltip": [
+          {
+            "field": "route",
+            "type": "nominal",
+            "title": "Move"
+          },
+          {
+            "field": "trips",
+            "type": "quantitative",
+            "title": "Times made"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/hotspots.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "rank": "number",
+            "lon": "number",
+            "lat": "number",
+            "photos": "number",
+            "share": "number"
+          }
+        }
+      },
+      "mark": {
+        "type": "circle",
+        "color": "#1b2430",
+        "size": 260,
+        "stroke": "#ffffff",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {
+            "field": "name",
+            "type": "nominal",
+            "title": "Area"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/hotspots.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "rank": "number",
+            "lon": "number",
+            "lat": "number",
+            "photos": "number",
+            "share": "number"
+          }
+        }
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 10,
+        "fontWeight": 700,
+        "color": "#ffffff"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "rank",
+          "type": "quantitative"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null,
+      "fill": "#E6EEF5"
+    },
+    "font": "Open Sans",
+    "legend": {
+      "labelFontSize": 11,
+      "titleFontSize": 11,
+      "titleFontWeight": 600,
+      "fillColor": "rgba(255,255,255,0.9)",
+      "padding": 6,
+      "cornerRadius": 3,
+      "strokeColor": "#d8dde5"
+    }
+  }
+}

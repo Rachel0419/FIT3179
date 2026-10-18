@@ -384,3 +384,4 @@ h1, h2, h3, h4, .act-label, .eyebrow, .glossary h4, .brand, .footer-label {
   .dashboard-header h1 { font-size: 1.8rem; }
   .conclusion { padding: 24px 22px; }
 }
+.vis-container .vega-bindings:empty { display: none; }

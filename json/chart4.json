@@ -1,23 +1,41 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 480,
-  "height": 380,
+  "width": 400,
+  "height": 320,
   "data": {
     "url": "data/camera_dataset.csv"
   },
+  "transform": [
+    {
+      "calculate": "toNumber(datum.Price)",
+      "as": "Price"
+    },
+    {
+      "calculate": "toNumber(datum['Effective pixels'])",
+      "as": "MP"
+    },
+    {
+      "calculate": "toNumber(datum['Release date']) + (random() - 0.5) * 0.6",
+      "as": "x"
+    }
+  ],
   "mark": {
     "type": "circle",
     "color": "#4e79a7",
-    "opacity": 0.45
+    "opacity": 0.35,
+    "stroke": null
   },
   "encoding": {
     "x": {
-      "field": "Release date",
+      "field": "x",
       "type": "quantitative",
       "title": "Release year",
       "scale": {
-        "zero": false,
-        "padding": 12
+        "domain": [
+          1993.5,
+          2007.5
+        ],
+        "nice": false
       },
       "axis": {
         "values": [
@@ -38,16 +56,17 @@
       "type": "quantitative",
       "title": "Price (US$, log scale)",
       "scale": {
-        "type": "log"
+        "type": "log",
+        "domain": [
+          10,
+          10000
+        ]
       },
       "axis": {
         "values": [
           10,
-          30,
           100,
-          300,
           1000,
-          3000,
           10000
         ],
         "format": "$,.0f",
@@ -55,19 +74,19 @@
       }
     },
     "size": {
-      "field": "Effective pixels",
+      "field": "MP",
       "type": "quantitative",
       "scale": {
-        "type": "linear",
-        "zero": true,
         "range": [
-          10,
-          200
-        ]
+          6,
+          110
+        ],
+        "zero": true
       },
       "legend": {
         "title": "Megapixels",
-        "orient": "top-left",
+        "orient": "top",
+        "direction": "horizontal",
         "values": [
           2,
           5,
@@ -75,7 +94,8 @@
           20
         ],
         "symbolFillColor": "#4e79a7",
-        "symbolOpacity": 0.6
+        "symbolOpacity": 0.5,
+        "symbolStrokeWidth": 0
       }
     },
     "tooltip": [
@@ -97,7 +117,7 @@
         "format": ",.0f"
       },
       {
-        "field": "Effective pixels",
+        "field": "MP",
         "type": "quantitative",
         "title": "Megapixels"
       }
@@ -112,17 +132,18 @@
       "labelFontSize": 11,
       "titleFontSize": 12,
       "titleFontWeight": 600,
-      "gridColor": "#e4e9f0",
+      "titleColor": "#1b2430",
+      "labelColor": "#5b6776",
+      "gridColor": "#edf0f5",
       "domainColor": "#9aa5b1",
-      "tickColor": "#9aa5b1"
+      "tickColor": "#9aa5b1",
+      "titlePadding": 10
     },
     "legend": {
       "labelFontSize": 11,
       "titleFontSize": 11,
       "titleFontWeight": 600,
-      "fillColor": "rgba(255,255,255,0.88)",
-      "padding": 6,
-      "cornerRadius": 3
+      "labelColor": "#5b6776"
     }
   }
 }
